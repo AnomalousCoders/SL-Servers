@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="description" content="The #1 SCP:Secret Laboratory (SCP:SL) serverlist allowing you to find and vote for your favourite sl servers and find communities to play with.">
+
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="slservers">
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/png" href="favicon.png"/>
+
+    <title>SL Servers - The #1 SCP:SL Serverlist!</title>
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Keywords, Irrelevant for ranking but still eventually useful -->
+    <meta name="keywords" lang="en" content="SCP:SL, SCP Secret Laboratory, SCP:SL Servers, SL Servers, Server List, SCP:SL Server List">
+    <meta name="keywords" lang="en-us" content="SCP:SL, SCP Secret Laboratory, SCP:SL Servers, SL Servers, Server List, SCP:SL Server List">
+  </head>
+  <body>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-auth.js"></script>
+
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyAe9HQunRfcWCu9PQRaLteEKRGgW8tvPj0",
+        authDomain: "sl-servers.firebaseapp.com",
+        databaseURL: "https://sl-servers.firebaseio.com",
+        projectId: "sl-servers",
+        storageBucket: "sl-servers.appspot.com",
+        messagingSenderId: "598621870110",
+        appId: "1:598621870110:web:5b9480eb59d012c249b60f",
+        measurementId: "G-K5TPYFFNES"
+      };
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('flutter_service_worker.js');
+        });
+      }
+    </script>
+    <script src="main.dart.js" type="application/javascript"></script>
+  </body>
+</html>
