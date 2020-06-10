@@ -5,9 +5,9 @@ import 'package:slservers/widgets/sync_switch_widget.dart';
 class ScrollWrapper extends StatelessWidget {
 
   final Widget child;
-  bool wrapScreenSize = false;
+  bool wrapScreenSize;
 
-  ScrollWrapper({this.child, this.wrapScreenSize});
+  ScrollWrapper({this.child, this.wrapScreenSize = false});
 
   ScrollController scrollController = new ScrollController();
 

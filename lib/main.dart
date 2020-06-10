@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:slservers/routes/home_route.dart';
 import 'package:slservers/routes/login_route.dart';
 
 void main() {
@@ -26,7 +27,7 @@ class SLServers extends StatelessWidget {
       ),
       routes: {
         "login/": (_) => LoginRoute(),
-        "/": (_) => LoginRoute()
+        "/": (_) => HomeRoute()
       },
       initialRoute: "login",
     );
