@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:slservers/routes/home_route.dart';
 import 'package:slservers/routes/login_route.dart';
 
@@ -21,7 +22,10 @@ class SLServers extends StatelessWidget {
         primarySwatch: ColorConstants.primary,
         accentColor: ColorConstants.accentColor,
         backgroundColor: ColorConstants.background,
-        scaffoldBackgroundColor: ColorConstants.background.shade500,
+        scaffoldBackgroundColor: ColorConstants.background,
+        tooltipTheme: TooltipThemeData(textStyle: GoogleFonts.raleway(color: Colors.white), decoration: BoxDecoration(
+          color: ColorConstants.background.shade400
+        ), padding: EdgeInsets.all(8)),
 
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

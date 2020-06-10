@@ -2,20 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slservers/main.dart';
+import 'package:slservers/widgets/sync_switch_widget.dart';
 
 class Tags {
 
-  static const TagWidget NSWF = TagWidget("NSFW", Colors.red);
-  static const TagWidget MODDED = TagWidget("MODDED", Colors.blue);
-  static const TagWidget ROLEPLAY = TagWidget("ROLEPLAY", Colors.deepOrange);
-  static const TagWidget EVENTS = TagWidget("EVENTS", Color(0xFFFF9505));
-  static const TagWidget P2W =  TagWidget("P2W", Colors.green);
-  static const TagWidget ANIME = TagWidget("ANIME", Colors.purpleAccent);
-  static const TagWidget ANARCHY = TagWidget("ANARCHY", Colors.black);
-  static const TagWidget TEENS = TagWidget("TEENS+", Colors.redAccent);
-  static const TagWidget BEGINNERS = TagWidget("BEGINNERS", Colors.brown);
-  static const TagWidget MODERATED = TagWidget("MODERATED", Colors.indigo, size: 13);
-  static const TagWidget VOTEREWARD = TagWidget("VOTE REWARD", Colors.deepPurple, size: 12,);
+  static const TagWidget NSWF = TagWidget("NSFW", Colors.red, tooltip: "This server appeals to mature audience",);
+  static const TagWidget MODDED = TagWidget("MODDED", Colors.blue, tooltip: "This server uses a server side modded version of the game",);
+  static const TagWidget ROLEPLAY = TagWidget("ROLEPLAY", Colors.deepOrange, tooltip: "This server requires roleplay",);
+  static const TagWidget EVENTS = TagWidget("EVENTS", Color(0xFFFF9505), tooltip: "This server regularly does events",);
+  static const TagWidget P2W =  TagWidget("P2W", Colors.green, tooltip: "This server sells in-game advantages for real money");
+  static const TagWidget ANIME = TagWidget("ANIME", Colors.purpleAccent, tooltip: "This server encourages the anime sub-culture",);
+  static const TagWidget ANARCHY = TagWidget("ANARCHY", Colors.black, tooltip: "This server doesn't enforce or have rules",);
+  static const TagWidget TEENS = TagWidget("TEENS+", Colors.redAccent, tooltip: "This server has minimum age and is targeting teens and adults",);
+  static const TagWidget BEGINNERS = TagWidget("BEGINNERS", Colors.brown, tooltip: "This server is beginner friendly",);
+  static const TagWidget MODERATED = TagWidget("MODERATED", Colors.indigo, size: 13, tooltip: "This server is actively moderated and rules are enforced",);
+  static const TagWidget VOTEREWARD = TagWidget("VOTE REWARD", Colors.deepPurple, size: 12, tooltip: "This server offers vote rewards",);
 
   static TagWidget parse(String tag) {
     switch(tag.toUpperCase()) {
@@ -71,15 +72,23 @@ class TagWidget extends StatelessWidget {
   final String text;
   final Color color;
   final double size;
+  final String tooltip;
 
-  const TagWidget(this.text, this.color, {this.size = 15});
+  const TagWidget(this.text, this.color, {this.size = 15, this.tooltip});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
       color: color,
-      child: Text(text, style: GoogleFonts.raleway(color: Colors.white, fontSize: size, fontWeight: FontWeight.w800),),
+      child: SyncSwitchWidget(
+        boolean: tooltip != null,
+        positive: Tooltip(
+          message: tooltip??"",
+            child: Text(text, style: GoogleFonts.raleway(color: Colors.white, fontSize: size, fontWeight: FontWeight.w800),)
+        ),
+        negative: Text(text, style: GoogleFonts.raleway(color: Colors.white, fontSize: size, fontWeight: FontWeight.w800),),
+      ),
     );
   }
 
