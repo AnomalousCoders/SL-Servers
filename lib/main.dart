@@ -1,8 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:slservers/routes/handlers.dart';
 import 'package:slservers/routes/home_route.dart';
 import 'package:slservers/routes/login_route.dart';
+
+import 'models/server.dart';
 
 void main() {
   runApp(SLServers());
@@ -12,8 +16,13 @@ class SLServers extends StatelessWidget {
 
   static FirebaseApp firebase = FirebaseApp(name: "SL Servers");
 
+  static Server currentlySelectedServer;
+
+  static final Router router = Router();
+
   @override
   Widget build(BuildContext context) {
+    _defineRoutes(router);
     return MaterialApp(
       title: 'SL Servers',
       theme: ThemeData(
@@ -29,13 +38,19 @@ class SLServers extends StatelessWidget {
 
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      onGenerateRoute: router.generator,
       routes: {
         "login/": (_) => LoginRoute(),
-        "/": (_) => HomeRoute()
+        "/": (_) => HomeRoute(),
       },
-      initialRoute: "login",
+      initialRoute: "/",
     );
   }
+
+  void _defineRoutes(Router router) {
+    router.define("/server/:server", handler: ServerHandler(), transitionType: TransitionType.cupertino);
+  }
+
 }
 
 class ColorConstants {

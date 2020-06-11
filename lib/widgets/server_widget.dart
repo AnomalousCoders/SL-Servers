@@ -1,10 +1,10 @@
-import 'package:flag/flag.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cursor/flutter_cursor.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slservers/main.dart';
 import 'package:slservers/models/server.dart';
+import 'package:slservers/widgets/flags.dart';
 import 'package:slservers/widgets/tags.dart';
 
 class ServerWidget extends StatefulWidget {
@@ -54,7 +54,13 @@ class _ServerWidgetState extends State<ServerWidget>
               children: <Widget>[
                 HoverCursor(
                   cursor: Cursor.pointer,
-                    child: Image.network(server.icon??ICON_FALLBACK, width: 200, height: 200, fit: BoxFit.cover,)
+                    child: GestureDetector(
+                      onTap: () {
+                        SLServers.currentlySelectedServer = server;
+                        SLServers.router.navigateTo(context, "/server/${server.id}");
+                      },
+                        child: Image.network(server.icon??ICON_FALLBACK, width: 200, height: 200, fit: BoxFit.cover,)
+                    )
                 ),
                 server.promoted ? Positioned(child: Tooltip(message: "This server is verified by us\nand can be trusted", child: Icon(Icons.verified_user, size: 40)), bottom: 8, right: 8,) : Container(),
               ],
@@ -117,7 +123,7 @@ class _ServerWidgetState extends State<ServerWidget>
               crossAxisAlignment: CrossAxisAlignment.end,
               children: server.languages.map((e) => Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Container(height: 40, width: 60,color: Colors.white,),
+                child: Container(height: 40, width: 60, child: Flags.DE,),
               )).toList(),
             ),
           )

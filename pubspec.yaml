@@ -32,7 +32,10 @@ dependencies:
   firebase_core: ^0.4.5
   firebase_auth: ^0.16.1
   http: ^0.12.1
+  html: ^0.14.0+3
+  flutter_html: ^1.0.0
 
+  fluro: ^1.6.3
   flag: ^3.0.1
   flutter_cursor: ^0.1.3
 
