@@ -20,7 +20,6 @@ import 'package:slservers/widgets/sync_switch_widget.dart';
 import 'package:slservers/widgets/tabbed_view.dart';
 import 'package:slservers/widgets/tags.dart';
 
-
 class ServerRoute extends StatefulWidget {
   ServerRoute({Key key, this.server}) : super(key: key);
 

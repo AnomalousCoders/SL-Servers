@@ -31,7 +31,7 @@ class _InstanceWidgetState extends State<InstanceWidget> {
             Container(
               width: double.infinity,
               alignment: Alignment.center,
-              child: Text(instance.name, style: GoogleFonts.raleway(fontSize: 25), textAlign: TextAlign.center,),
+              child: Text(instance.name, style: GoogleFonts.raleway(fontSize: 25, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
             ),
             Container(height: 8,),
             Text("Server IP", style: GoogleFonts.raleway(color: Colors.white70, fontWeight: FontWeight.bold),),
