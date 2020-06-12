@@ -1,15 +1,24 @@
+import 'dart:html';
+
+import 'package:easy_web_view/easy_web_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_cursor/flutter_cursor.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:markdown/markdown.dart' as md;
 import 'package:slservers/main.dart';
 import 'package:slservers/models/server.dart';
 import 'package:slservers/security/auth_manager.dart';
 import 'package:slservers/widgets/href.dart';
 import 'package:slservers/widgets/instance_widget.dart';
 import 'package:slservers/widgets/scroll_wrapper.dart';
+import 'package:slservers/widgets/server_plugins.dart';
 import 'package:slservers/widgets/shield_button.dart';
 import 'package:slservers/widgets/sync_switch_widget.dart';
+import 'package:slservers/widgets/tabbed_view.dart';
 import 'package:slservers/widgets/tags.dart';
+
 
 class ServerRoute extends StatefulWidget {
   ServerRoute({Key key, this.server}) : super(key: key);
@@ -29,12 +38,15 @@ class _ServerRouteState extends State<ServerRoute> {
 
   _ServerRouteState(this.server);
 
+  GlobalKey _scaffoldKey = GlobalKey(debugLabel: "ServerScaffold");
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      key: _scaffoldKey,
       body: AuthManager(
         ignoreLogin: true,
         child: ScrollWrapper(
@@ -74,7 +86,8 @@ class _ServerRouteState extends State<ServerRoute> {
                                   ],
                                 ),
                               ),
-                              Container(height: 8,),
+                              Container(height: 16,),
+                              Text("Servers", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
@@ -97,6 +110,48 @@ class _ServerRouteState extends State<ServerRoute> {
                             ],
                           ),
                         ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          TabbedView(navigation: <Widget>[
+                            Text("Home"),
+                            Text("Rules"),
+                            Text("Plugins")
+                          ], widgets: [
+                                () => EasyWebView(
+                                  width: width / 5 * 4,
+                                  height: height - 60,
+                                  src: md.markdownToHtml(server.description,extensionSet: md.ExtensionSet.gitHubWeb),
+                                  isHtml: true,
+                                  convertToWidgets: true,
+                                  onLoaded: () {},
+                                ),
+                                () {
+                                  int i = 1;
+                                  return Column(
+                                    children: <Widget>[
+                                      Container(height: 16),
+                                      Text("Rules", style: GoogleFonts.raleway(fontSize: 35, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.center,),
+                                      Container(
+                                        width: width / 5 * 3,
+                                        child: Column(children: server.rules.map((e) => Row(children: <Widget>[
+                                          Text("${i++}. ", style: GoogleFonts.roboto(fontSize: 30, color: Colors.white70),),
+                                          Text(e, style: GoogleFonts.raleway(fontSize: 20),)
+                                        ])).toList(), crossAxisAlignment: CrossAxisAlignment.start),
+                                      ),
+                                    ],
+                                  );
+                                },
+                                () => Container(
+                                  padding: EdgeInsets.only(top: 16),
+                                  child: Column(
+                                    children: server.instanceRefs.map((e) => ServerPlugins(e)).toList(),
+                                  ),
+                                )
+                          ], width: width / 5 * 4, height: height,),
+                        ],
                       )
                     ],
                   )
@@ -115,6 +170,7 @@ class _ServerRouteState extends State<ServerRoute> {
   }
 
   Widget _discordButton() {
+
     return SyncSwitchWidget(
       boolean: server.discord != null,
       negative: Container(),
@@ -141,9 +197,15 @@ class _ServerRouteState extends State<ServerRoute> {
       negative: Container(),
       positive: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Href(
-          href: "mailto:${server.mail}",
-            child: ShieldButton(color: Color(0xFFD83B3B), icon: Icon(Icons.email, size: 30,), text: Text("${mailSpit[0]}\n@${mailSpit[1]}", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 15),), width: 250, height: 40,)
+        child: HoverCursor(
+          cursor: Cursor.copy,
+          child: GestureDetector(
+            onTap: () {
+              sendToast(context, "Copied E-Mail to Clipboard", Colors.blue);
+              Clipboard.setData(ClipboardData(text: server.mail));
+            },
+              child: ShieldButton(color: Color(0xFFD83B3B), icon: Icon(Icons.email, size: 30,), text: Text("${mailSpit[0]}\n@${mailSpit[1]}", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 15),), width: 250, height: 40,)
+          ),
         ),
       ),
     );
@@ -171,6 +233,14 @@ class _ServerRouteState extends State<ServerRoute> {
         ),
       ),
     );
+  }
+
+  void sendToast(BuildContext context, String msg, Color color) {
+    final SnackBar snack = SnackBar(content: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(msg, style: TextStyle(color: Colors.white, fontSize: 18), textAlign: TextAlign.center,),
+    ), backgroundColor: color,);
+    (_scaffoldKey.currentState as ScaffoldState).showSnackBar(snack);
   }
 
 }
