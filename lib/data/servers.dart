@@ -37,5 +37,10 @@ class Servers {
     return server;
   }
 
+  static Future<bool> vote(String id) async {
+    var response = await http.post("$API_LOCATION/server/$id/vote");
+    return response.statusCode == 204;
+  }
+
 
 }

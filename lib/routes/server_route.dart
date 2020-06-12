@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_cursor/flutter_cursor.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:markdown/markdown.dart' as md;
+import 'package:slservers/data/servers.dart';
 import 'package:slservers/main.dart';
 import 'package:slservers/models/server.dart';
 import 'package:slservers/security/auth_manager.dart';
@@ -85,6 +86,17 @@ class _ServerRouteState extends State<ServerRoute> {
                                     Text("${server.votecount}", style: GoogleFonts.raleway(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.lightGreenAccent),),
                                   ],
                                 ),
+                              ),
+                              Container(
+                                width: 120,
+                                child: RaisedButton(child: Text("Vote", style: GoogleFonts.raleway(fontSize: 20, fontWeight: FontWeight.w600),), onPressed: () async {
+                                  bool success = await Servers.vote(server.id);
+                                  if (success) {
+                                    sendToast(context, "Your vote has been registered!", Colors.green);
+                                  } else {
+                                    sendToast(context, "You already voted for this server", Colors.redAccent);
+                                  }
+                                }, color: Colors.green),
                               ),
                               Container(height: 16,),
                               Text("Servers", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),

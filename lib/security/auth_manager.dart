@@ -15,8 +15,12 @@ class AuthManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ReroutingWidget(child: (_) => child, route: "login", future: shouldReroute(), awaiting: (_) => Scaffold(),),
+      child: ReroutingWidget(child: (_) => child, route: "/login", future: shouldReroute(), awaiting: (_) => Scaffold(),),
     );
+  }
+
+  void requireLogin({@required BuildContext context}) {
+    Navigator.pushReplacementNamed(context, "/login");
   }
 
   Future<bool> checkAuthorized() async {
@@ -27,6 +31,10 @@ class AuthManager extends StatelessWidget {
   Future<bool> shouldReroute() async {
     bool authenticated = await checkAuthorized();
     return ignoreLogin ? false : authenticated;
+  }
+
+  static AuthManager ofContext({@required BuildContext context}) {
+    return context.findAncestorWidgetOfExactType<AuthManager>();
   }
 
 }
