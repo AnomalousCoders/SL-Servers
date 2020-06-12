@@ -40,10 +40,10 @@ class SLServers extends StatelessWidget {
       ),
       onGenerateRoute: router.generator,
       routes: {
-        "login/": (_) => LoginRoute(),
+        "/login": (_) => LoginRoute(),
         "/": (_) => HomeRoute(),
       },
-      initialRoute: "/",
+      initialRoute: "login",
     );
   }
 

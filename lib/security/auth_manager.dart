@@ -15,7 +15,7 @@ class AuthManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ReroutingWidget(child: (_) => child, route: "login", future: shouldReroute(), awaiting: (_) => Container(),),
+      child: ReroutingWidget(child: (_) => child, route: "login", future: shouldReroute(), awaiting: (_) => Scaffold(),),
     );
   }
 
