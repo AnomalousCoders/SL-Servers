@@ -105,8 +105,8 @@ class _ServerWidgetState extends State<ServerWidget>
                             ),
                             GridView.count(crossAxisCount: 2, scrollDirection: Axis.horizontal,
                               children: server.tags.map((e) => Tags.parse(e)).toList(),
-                              crossAxisSpacing: 8, mainAxisSpacing: 8, shrinkWrap: true,childAspectRatio: 1 / 3.5,),
-
+                              crossAxisSpacing: 8, mainAxisSpacing: 8, shrinkWrap: true,childAspectRatio: 1 / 3.5,
+                            ),
                           ],
                         )
                     ),

@@ -8,9 +8,10 @@ class ServerInstance {
     List<String> plugins;
     List<String> tags;
     bool verified;
+    bool ff;
     String version;
 
-    ServerInstance({this.address, this.description, this.id, this.maxplayers, this.name, this.players, this.plugins, this.tags, this.verified, this.version});
+    ServerInstance({this.address, this.description, this.id, this.maxplayers, this.name, this.players, this.plugins, this.tags, this.verified, this.ff, this.version,});
 
     factory ServerInstance.fromJson(Map<String, dynamic> json) {
         return ServerInstance(
@@ -22,7 +23,8 @@ class ServerInstance {
             players: json['players'], 
             plugins: json['plugins'] != null ? new List<String>.from(json['plugins']) : null, 
             tags: json['tags'] != null ? new List<String>.from(json['tags']) : null, 
-            verified: json['verified'], 
+            verified: json['verified'] != null ? json['verified'] : false,
+            ff: json['ff'] != null ? json['verified'] : false,
             version: json['version'], 
         );
     }
@@ -36,6 +38,7 @@ class ServerInstance {
         data['name'] = this.name;
         data['players'] = this.players;
         data['verified'] = this.verified;
+        data['ff'] = this.ff;
         data['version'] = this.version;
         if (this.plugins != null) {
             data['plugins'] = this.plugins;

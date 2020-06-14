@@ -1,10 +1,10 @@
 import 'dart:html';
 
-import 'package:easy_web_view/easy_web_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cursor/flutter_cursor.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:slservers/data/servers.dart';
@@ -72,7 +72,7 @@ class _ServerRouteState extends State<ServerRoute> {
                             children: <Widget>[
                               Container(height: 116),
                               Text(server.name, style: GoogleFonts.raleway(fontSize: 35, fontWeight: FontWeight.w800, color: Colors.white), textAlign: TextAlign.center,),
-                              Text(server.description, style: GoogleFonts.roboto(fontSize: 20, color: Colors.white), textAlign: TextAlign.center),
+                              Text(server.preview, style: GoogleFonts.roboto(fontSize: 20, color: Colors.white), textAlign: TextAlign.center),
                               Container(height: 16,),
                               Container(
                                 width: 120,
@@ -131,13 +131,12 @@ class _ServerRouteState extends State<ServerRoute> {
                             Text("Rules"),
                             Text("Plugins")
                           ], widgets: [
-                                () => EasyWebView(
+                                () => Container(
                                   width: width / 5 * 4,
-                                  height: height - 60,
-                                  src: md.markdownToHtml(server.description,extensionSet: md.ExtensionSet.gitHubWeb),
-                                  isHtml: true,
-                                  convertToWidgets: true,
-                                  onLoaded: () {},
+                                  //height: height - 60,
+                                  child: HtmlWidget(
+                                    md.markdownToHtml(server.description,extensionSet: md.ExtensionSet.commonMark, inlineOnly: true),
+                                  ),
                                 ),
                                 () {
                                   int i = 1;
