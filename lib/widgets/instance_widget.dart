@@ -1,23 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slservers/main.dart';
-import 'package:slservers/models/instance.dart';
+import 'package:slservers/models/server_instance.dart';
 
 class InstanceWidget extends StatefulWidget {
-  InstanceWidget({Key key, this.instance}) : super(key: key);
+  InstanceWidget({Key key, this.instance, this.sendToast}) : super(key: key);
 
   ServerInstance instance;
+  Function(String, Color) sendToast;
 
   @override
-  _InstanceWidgetState createState() => _InstanceWidgetState(instance);
+  _InstanceWidgetState createState() => _InstanceWidgetState(instance, this);
 }
 
 class _InstanceWidgetState extends State<InstanceWidget> {
 
+  InstanceWidget parent;
   ServerInstance instance;
 
-  _InstanceWidgetState(this.instance);
+  _InstanceWidgetState(this.instance, this.parent);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +45,16 @@ class _InstanceWidgetState extends State<InstanceWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text("Server IP", style: GoogleFonts.raleway(color: Colors.white70, fontWeight: FontWeight.bold),),
-                    Text(instance.address, style: GoogleFonts.roboto(fontSize: 20),),
+                    Row(
+                      children: <Widget>[
+                        Text(instance.address, style: GoogleFonts.roboto(fontSize: 20)),
+                        //Container(width: 8,),
+                        IconButton(onPressed: () {
+                          parent.sendToast("Copied Address to Clipboard", Colors.blue);
+                          Clipboard.setData(ClipboardData(text: instance.address));
+                        }, icon: Icon(Icons.content_copy, size: 20,), color: Colors.white70,)
+                      ],
+                    ),
                   ],
                 ),
                 Padding(

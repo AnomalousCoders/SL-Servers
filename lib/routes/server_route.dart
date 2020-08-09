@@ -14,7 +14,6 @@ import 'package:slservers/security/auth_manager.dart';
 import 'package:slservers/widgets/href.dart';
 import 'package:slservers/widgets/instance_widget.dart';
 import 'package:slservers/widgets/scroll_wrapper.dart';
-import 'package:slservers/widgets/server_plugins.dart';
 import 'package:slservers/widgets/shield_button.dart';
 import 'package:slservers/widgets/sync_switch_widget.dart';
 import 'package:slservers/widgets/tabbed_view.dart';
@@ -42,6 +41,11 @@ class _ServerRouteState extends State<ServerRoute> {
 
   @override
   Widget build(BuildContext context) {
+
+    if (server == null) {
+      print("Server not found");
+    }
+
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
@@ -49,7 +53,7 @@ class _ServerRouteState extends State<ServerRoute> {
       key: _scaffoldKey,
       body: AuthManager(
         ignoreLogin: true,
-        child: ScrollWrapper(
+        child: (_) => ScrollWrapper(
           wrapScreenSize: false,
           child: Stack(
             children: <Widget>[
@@ -57,8 +61,18 @@ class _ServerRouteState extends State<ServerRoute> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Image.network(server.banner??FALLBACK_BANNER, width: width, height: height / 3, fit: BoxFit.fitWidth),
-                  Row(
+                  Container(
+                    width: width, height: height / 3,
+                    child: Stack(
+                      children: <Widget>[
+                        Image.network(server.banner??FALLBACK_BANNER, width: width, height: height / 3, fit: BoxFit.fitWidth),
+                        IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
+                          SLServers.router.pop(context);
+                        })
+                      ],
+                    ),
+                  ),
+                 Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -102,7 +116,7 @@ class _ServerRouteState extends State<ServerRoute> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
-                                  children: server.instanceRefs.map((e) => InstanceWidget(instance: e)).toList(),
+                                  children: server.instanceRefs.map((e) => InstanceWidget(instance: e, sendToast: (x,y) => this.sendToast(context, x, y),)).toList(),
                                 ),
                               ),
                               Container(height: 16,),
@@ -117,7 +131,8 @@ class _ServerRouteState extends State<ServerRoute> {
                               Text("Contact", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
                               _discordButton(),
                               _webButton(),
-                              _emailButton()
+                              _emailButton(),
+                              Container(height: 16,)
                             ],
                           ),
                         ),
@@ -129,13 +144,12 @@ class _ServerRouteState extends State<ServerRoute> {
                           TabbedView(navigation: <Widget>[
                             Text("Home"),
                             Text("Rules"),
-                            Text("Plugins")
                           ], widgets: [
                                 () => Container(
                                   width: width / 5 * 4,
                                   //height: height - 60,
                                   child: HtmlWidget(
-                                    md.markdownToHtml(server.description,extensionSet: md.ExtensionSet.commonMark, inlineOnly: true),
+                                    md.markdownToHtml(server.description,extensionSet: md.ExtensionSet.commonMark, inlineOnly: false),
                                   ),
                                 ),
                                 () {
@@ -149,17 +163,11 @@ class _ServerRouteState extends State<ServerRoute> {
                                         child: Column(children: server.rules.map((e) => Row(children: <Widget>[
                                           Text("${i++}. ", style: GoogleFonts.roboto(fontSize: 30, color: Colors.white70),),
                                           Text(e, style: GoogleFonts.raleway(fontSize: 20),)
-                                        ])).toList(), crossAxisAlignment: CrossAxisAlignment.start),
+                                        ], crossAxisAlignment: CrossAxisAlignment.center,)).toList(), crossAxisAlignment: CrossAxisAlignment.start),
                                       ),
                                     ],
                                   );
-                                },
-                                () => Container(
-                                  padding: EdgeInsets.only(top: 16),
-                                  child: Column(
-                                    children: server.instanceRefs.map((e) => ServerPlugins(e)).toList(),
-                                  ),
-                                )
+                                }
                           ], width: width / 5 * 4, height: height,),
                         ],
                       )
@@ -180,16 +188,15 @@ class _ServerRouteState extends State<ServerRoute> {
   }
 
   Widget _discordButton() {
-
     return SyncSwitchWidget(
-      boolean: server.discord != null,
+      boolean: server.discord != null && server.description != "",
       negative: Container(),
       positive: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Tooltip(
-          message: server.discord,
+          message: server.discord??"",
           child: Href(
-            href: server.discord,
+            href: server.discord??"",
             child: ShieldButton(color: Color(0xFF7289DA), icon: Padding(
               padding: const EdgeInsets.only(left:6, top: 6),
               child: Image.network("https://discord.com/assets/28174a34e77bb5e5310ced9f95cb480b.png"),
@@ -201,21 +208,19 @@ class _ServerRouteState extends State<ServerRoute> {
   }
 
   Widget _emailButton() {
+    if (server.mail == null || server.mail == "") return Container();
+
     List<String> mailSpit = server.mail.split("@");
-    return SyncSwitchWidget(
-      boolean: server.mail != null,
-      negative: Container(),
-      positive: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: HoverCursor(
-          cursor: Cursor.copy,
-          child: GestureDetector(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: HoverCursor(
+        cursor: Cursor.copy,
+        child: GestureDetector(
             onTap: () {
               sendToast(context, "Copied E-Mail to Clipboard", Colors.blue);
               Clipboard.setData(ClipboardData(text: server.mail));
             },
-              child: ShieldButton(color: Color(0xFFD83B3B), icon: Icon(Icons.email, size: 30,), text: Text("${mailSpit[0]}\n@${mailSpit[1]}", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 15),), width: 250, height: 40,)
-          ),
+            child: ShieldButton(color: Color(0xFFD83B3B), icon: Icon(Icons.email, size: 30,), text: Text("${mailSpit[0]}\n@${mailSpit[1]}", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 15),), width: 250, height: 40,)
         ),
       ),
     );
@@ -223,10 +228,12 @@ class _ServerRouteState extends State<ServerRoute> {
 
   Widget _webButton() {
 
+    if (server.website == null || server.website == "") return Container();
+
     String s = server.website
         .replaceFirst("https://", "")
         .replaceFirst("http://", "");
-    List<String> splitted = s.split("/");
+    List<String> spliced = s.split("/");
 
     return SyncSwitchWidget(
       boolean: server.website != null,
@@ -237,7 +244,7 @@ class _ServerRouteState extends State<ServerRoute> {
           message: server.website,
           child: Href(
             href: server.website,
-              child: ShieldButton(color: Colors.orange, icon: Icon(Icons.language, size: 30,), text: Text(splitted[0],
+              child: ShieldButton(color: Colors.orange, icon: Icon(Icons.language, size: 30,), text: Text(spliced[0],
                 style: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 15),), width: 250, height: 40,)
           ),
         ),

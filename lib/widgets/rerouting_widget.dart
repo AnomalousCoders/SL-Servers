@@ -18,7 +18,8 @@ class ReroutingWidget extends StatelessWidget {
         if (!snapshot.data) {
           return child(context);
         } else {
-          Navigator.popAndPushNamed(context, route);
+          print("Rerouting to $route");
+          Future.delayed(Duration.zero, () =>  Navigator.pushReplacementNamed(context, route));
           return Container();
         }
       }

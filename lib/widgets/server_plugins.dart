@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slservers/main.dart';
-import 'package:slservers/models/instance.dart';
+import 'package:slservers/models/server_instance.dart';
 
 class ServerPlugins extends StatelessWidget {
 

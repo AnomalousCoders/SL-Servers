@@ -19,7 +19,7 @@ class FlagWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Image.network("flags/$language.png"),
+      child: Image.network("flags/$language.png", fit: BoxFit.cover,),
     );
   }
 

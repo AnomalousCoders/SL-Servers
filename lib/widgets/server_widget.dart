@@ -20,7 +20,7 @@ class ServerWidget extends StatefulWidget {
 class _ServerWidgetState extends State<ServerWidget>
     with SingleTickerProviderStateMixin {
 
-  static const String ICON_FALLBACK = "https://www.fad-multigaming.de/img/bf4__server_performance_icons/server_performance_warning.jpg";
+  static const String ICON_FALLBACK = "https://devforum.roblox.com/uploads/default/original/4X/2/c/3/2c36c99a09cd10e55a48c24cdbb6d52ecbadf575.png";
 
   Server server;
 
@@ -42,11 +42,14 @@ class _ServerWidgetState extends State<ServerWidget>
 
   @override
   Widget build(BuildContext context) {
+    int tagLimitIndex = 0;
     return Container(
+      padding: EdgeInsets.all(8),
       height: 200,
       width: 1200,
       child: Stack(
-        children: [Row(
+        children: [
+          Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
@@ -75,7 +78,7 @@ class _ServerWidgetState extends State<ServerWidget>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(height: 8,),
-                        Text(server.name, style: GoogleFonts.raleway(fontSize: 30, fontWeight: FontWeight.w800, color: Colors.white),),
+                        Text(server.name, style: GoogleFonts.raleway(fontSize: 30, fontWeight: FontWeight.w800, color: Colors.white)),
                         Container(
                           width: 600,
                             child: Text(server.preview, style: GoogleFonts.roboto(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white70), softWrap: true,)
@@ -89,6 +92,7 @@ class _ServerWidgetState extends State<ServerWidget>
                     left: 0,
                     child: Container(
                       height: 60,
+                        width: double.maxFinite,
                         child: Row(
                           children: <Widget>[
                             Container(
@@ -99,18 +103,31 @@ class _ServerWidgetState extends State<ServerWidget>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Text("Votes", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-                                  Text("${server.votecount}", style: GoogleFonts.raleway(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.lightGreenAccent),),
+                                  Text("${server.votecount}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.lightGreenAccent),),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: 120,
+                              height: 60,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Players", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
+                                  Text("${server.players}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.lightBlueAccent),),
                                 ],
                               ),
                             ),
                             GridView.count(crossAxisCount: 2, scrollDirection: Axis.horizontal,
-                              children: server.tags.map((e) => Tags.parse(e)).toList(),
-                              crossAxisSpacing: 8, mainAxisSpacing: 8, shrinkWrap: true,childAspectRatio: 1 / 3.5,
+                              children: server.tags.map((e) => Tags.parse(e)).where((_) => tagLimitIndex++ < 10).toList(),
+                              crossAxisSpacing: 8, mainAxisSpacing: 8, shrinkWrap: true, childAspectRatio: 1 / 3.5,
                             ),
                           ],
                         )
                     ),
                 ),
+                Container(width: 800)
               ],
             ),
           ],
@@ -123,7 +140,7 @@ class _ServerWidgetState extends State<ServerWidget>
               crossAxisAlignment: CrossAxisAlignment.end,
               children: server.languages.map((e) => Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Container(height: 40, width: 60, child: Flags.DE,),
+                child: Container(height: 40, width: 60, child: FlagWidget(language: e.toLowerCase(),),),
               )).toList(),
             ),
           )

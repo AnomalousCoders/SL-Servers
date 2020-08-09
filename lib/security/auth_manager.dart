@@ -4,18 +4,28 @@ import 'package:slservers/widgets/rerouting_widget.dart';
 
 class AuthManager extends StatelessWidget {
 
+  static String afterLogin = "/";
+
   static FirebaseUser user;
 
-  final Widget child;
+  final Widget Function(BuildContext) child;
+
+  static String getAfterLoginOnce() {
+    String snap = afterLogin;
+    afterLogin = null;
+    return snap;
+  }
 
   bool ignoreLogin = false;
 
-  AuthManager({Key key, this.child, this.ignoreLogin}) : super(key: key);
+  String al = "/";
+
+  AuthManager({Key key, this.child, this.ignoreLogin, this.al}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ReroutingWidget(child: (_) => child, route: "/login", future: shouldReroute(), awaiting: (_) => Scaffold(),),
+      child: ReroutingWidget(child: child, route: "/login", future: shouldReroute(), awaiting: (_) => Scaffold(),),
     );
   }
 
@@ -24,13 +34,17 @@ class AuthManager extends StatelessWidget {
   }
 
   Future<bool> checkAuthorized() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    return user != null;
+    user = await FirebaseAuth.instance.currentUser();
+    if (user==null) return false;
+    return true;
   }
 
   Future<bool> shouldReroute() async {
     bool authenticated = await checkAuthorized();
-    return ignoreLogin ? false : authenticated;
+    bool reroute = ignoreLogin ? false : !authenticated;
+    print("Rerouting: $reroute Authenticated: $authenticated");
+    if (reroute && !ignoreLogin) afterLogin = al;
+    return reroute;
   }
 
   static AuthManager ofContext({@required BuildContext context}) {

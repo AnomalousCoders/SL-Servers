@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,6 +26,8 @@ class _LoginRouteState extends State<LoginRoute> {
 
   GlobalKey scaffold = GlobalKey(debugLabel: "LoginScaffold");
 
+  StreamSubscription<FirebaseUser> streamSub;
+
   @override
   Widget build(BuildContext context) {
     print("Building Login");
@@ -36,7 +38,7 @@ class _LoginRouteState extends State<LoginRoute> {
       key: scaffold,
       body: AuthManager(
         ignoreLogin: true,
-        child: ScrollWrapper(
+        child: (_) =>  ScrollWrapper(
           wrapScreenSize: true,
           child: Center(
             child: SyncSwitchWidget(
@@ -140,8 +142,7 @@ class _LoginRouteState extends State<LoginRoute> {
                                     await result.user.updateProfile(update);
                                     _loginSuccessful(context);
                                     print("Token: ${result.user.getIdToken()}");
-                                    sleep(Duration(seconds: 2));
-                                    Navigator.of(context).pushReplacementNamed("/");
+                                    Navigator.pushReplacementNamed(context, AuthManager.getAfterLoginOnce());
                                     return;
                                   } catch (_) {
                                     _unsuccessfulRegistration(context);
@@ -227,8 +228,7 @@ class _LoginRouteState extends State<LoginRoute> {
 
                                   _loginSuccessful(context);
                                   print("Token: ${(await result.user.getIdToken()).token}");
-                                  sleep(Duration(seconds: 2));
-                                  Navigator.of(context).pushReplacementNamed("/");
+                                  Navigator.pushReplacementNamed(context, AuthManager.getAfterLoginOnce());
                                   return;
                                 } else {
                                   _unsuccessfulLogin(context);
@@ -255,6 +255,23 @@ class _LoginRouteState extends State<LoginRoute> {
         ),
       ),
     );
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    streamSub = FirebaseAuth.instance.onAuthStateChanged.listen((event) {
+      if (event.isAnonymous) return;
+      Navigator.pushReplacementNamed(context, AuthManager.afterLogin??"/");
+    });
+  }
+
+
+  @override
+  void dispose() {
+    streamSub.cancel();
+    super.dispose();
   }
 
   void _loginSuccessful(BuildContext context) {

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:slservers/routes/create_route.dart';
 import 'package:slservers/routes/handlers.dart';
 import 'package:slservers/routes/home_route.dart';
 import 'package:slservers/routes/login_route.dart';
@@ -41,14 +42,16 @@ class SLServers extends StatelessWidget {
       onGenerateRoute: router.generator,
       routes: {
         "/login": (_) => LoginRoute(),
+        "/create": (_) => CreateRoute(),
         "/": (_) => HomeRoute(),
       },
-      initialRoute: "login",
+      initialRoute: "/",
     );
   }
 
   void _defineRoutes(Router router) {
-    router.define("/server/:server", handler: ServerHandler(), transitionType: TransitionType.cupertino);
+    router.define("/server/:server", handler: ServerHandler(), transitionType: TransitionType.fadeIn);
+    router.define("/list/:page", handler: ListHandler(), transitionType: TransitionType.fadeIn);
   }
 
 }
