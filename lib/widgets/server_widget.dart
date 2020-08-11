@@ -20,7 +20,7 @@ class ServerWidget extends StatefulWidget {
 class _ServerWidgetState extends State<ServerWidget>
     with SingleTickerProviderStateMixin {
 
-  static const String ICON_FALLBACK = "https://devforum.roblox.com/uploads/default/original/4X/2/c/3/2c36c99a09cd10e55a48c24cdbb6d52ecbadf575.png";
+  static const String ICON_FALLBACK = "https://i.imgur.com/eozgscT.jpg";
 
   Server server;
 

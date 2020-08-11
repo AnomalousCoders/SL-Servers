@@ -35,6 +35,11 @@ class ServerInstance {
   List<String> get tags => _tags;
   List<String> get plugins => _plugins;
 
+
+  set version(String value) {
+    _version = value;
+  }
+
   ServerInstance({
       String id, 
       String address, 
@@ -90,4 +95,15 @@ class ServerInstance {
     return map;
   }
 
+  set players(int value) {
+    _players = value;
+  }
+
+  set maxplayers(int value) {
+    _maxplayers = value;
+  }
+
+  set ff(bool value) {
+    _ff = value;
+  }
 }

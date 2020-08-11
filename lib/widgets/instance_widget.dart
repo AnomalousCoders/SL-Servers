@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slservers/main.dart';
 import 'package:slservers/models/server_instance.dart';
+import 'package:slservers/widgets/sync_switch_widget.dart';
 
 class InstanceWidget extends StatefulWidget {
   InstanceWidget({Key key, this.instance, this.sendToast}) : super(key: key);
@@ -24,6 +25,7 @@ class _InstanceWidgetState extends State<InstanceWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print("PreRender: ${instance.toJson()}");
     return Container(
       color: ColorConstants.background.shade500,
       child: Padding(
@@ -112,19 +114,23 @@ class _InstanceWidgetState extends State<InstanceWidget> {
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text("Plugins", style: GoogleFonts.raleway(color: Colors.white38, fontWeight: FontWeight.bold),textAlign: TextAlign.start),
-                        Text(instance.plugins.join(" "), style: GoogleFonts.roboto(fontSize: 15, color: Colors.white70),),
-                      ],
-                    ),
-                  ],
-                )
+               SyncSwitchWidget(
+                 boolean: (instance.plugins??[]).length > 0,
+                 positive: Row(
+                   mainAxisAlignment: MainAxisAlignment.start,
+                   children: <Widget>[
+                     Column(
+                       mainAxisAlignment: MainAxisAlignment.start,
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: <Widget>[
+                         Text("Plugins", style: GoogleFonts.raleway(color: Colors.white38, fontWeight: FontWeight.bold),textAlign: TextAlign.start),
+                         Text((instance.plugins??[]).join(" "), style: GoogleFonts.roboto(fontSize: 15, color: Colors.white70),),
+                       ],
+                     ),
+                   ],
+                 ),
+                 negative: Container(),
+               )
               ],
             )
           ],

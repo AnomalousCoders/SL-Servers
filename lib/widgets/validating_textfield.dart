@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:slservers/widgets/sync_switch_widget.dart';
 
 class ValidatingTextfield extends StatefulWidget {
-  ValidatingTextfield({Key key, this.width, this.initial, this.label, this.validator, this.onSuccessful}) : super(key: key);
+  ValidatingTextfield({Key key, this.width, this.initial, this.label, this.validator, this.onSuccessful, this.refactor}) : super(key: key);
 
   String initial;
   String label;
   double width;
   Function(String) onSuccessful;
   bool Function(String) validator;
+  String Function(String) refactor = (s) => s;
 
   @override
   _ValidatingTextfieldState createState() => _ValidatingTextfieldState(this);
@@ -25,6 +26,7 @@ class _ValidatingTextfieldState extends State<ValidatingTextfield> {
 
   @override
   void initState() {
+    if (parent.refactor == null) parent.refactor = (s) => s;
     controller = new TextEditingController(text: parent.initial);
     super.initState();
   }
@@ -38,6 +40,11 @@ class _ValidatingTextfieldState extends State<ValidatingTextfield> {
           Container(
             width: parent.width / 10 * 8,
             child: TextField(controller: controller, onChanged: (s) {
+              String refactored = parent.refactor(s);
+              if (refactored != s) {
+                controller.text = refactored;
+                s = refactored;
+              }
               if (parent.validator(s)) parent.onSuccessful(s);
               this.setState(() { });
             }, decoration: InputDecoration(labelText: parent.label, border: OutlineInputBorder(), filled: true, fillColor: Colors.black12),),

@@ -76,21 +76,40 @@ class _CreateRouteState extends State<CreateRoute> {
                 Text("Design", style: GoogleFonts.raleway(color: Colors.yellowAccent, fontSize: 24, fontWeight: FontWeight.bold),),
                 Text("Settings for the visual representation\nof your server page", style: GoogleFonts.raleway(color: Colors.white70, fontSize: 18), textAlign: TextAlign.center,),
                 Container(height: 8,),
-                Container(
-                  width: size.width * 0.75 / 2 + 8,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(controller: TextEditingController(text: server.icon), onChanged: (s) => server.icon = s, decoration: InputDecoration(labelText: "Icon", border: OutlineInputBorder(), filled: true, fillColor: Colors.black12),),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(controller: TextEditingController(text: server.banner), onChanged: (s) => server.banner = s, decoration: InputDecoration(labelText: "Banner", border: OutlineInputBorder(), filled: true, fillColor: Colors.black12),),
-                      ),
-                    ],
-                  ),
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      child: ValidatingTextfield(width: size.width * 0.75 / 2 - 8 ,initial: server.icon, onSuccessful: (s) => server.icon = s, label: "Icon", validator: (s) {
+                        return isAlphanumeric(s) && s.length == 7;
+                      }, refactor: (s) {
+                        if (isURL(s, hostWhitelist: ["imgur.com"])) {
+                          String extracted = s.split("imgur.com/")[1];
+                          return extracted;
+                        } else {
+                          return s;
+                        }
+                      }),
+                    )
                 ),
+
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      child: ValidatingTextfield(width: size.width * 0.75 / 2 - 8 ,initial: server.banner, onSuccessful: (s) => server.banner = s, label: "Banner", validator: (s) {
+                        return isAlphanumeric(s) && s.length == 7;
+                      }, refactor: (s) {
+                        if (isURL(s, hostWhitelist: ["imgur.com"])) {
+                          String extracted = s.split("imgur.com/")[1];
+                          return extracted;
+                        } else {
+                          return s;
+                        }
+                      }),
+                    )
+                ),
+
                 Container(height: 64,),
                 Text("Social", style: GoogleFonts.raleway(color: Colors.redAccent, fontSize: 24, fontWeight: FontWeight.bold),),
                 Text("Links to your social media accounts\nyour discord server etc.", style: GoogleFonts.raleway(color: Colors.white70, fontSize: 18), textAlign: TextAlign.center,),
@@ -99,7 +118,7 @@ class _CreateRouteState extends State<CreateRoute> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    child: ValidatingTextfield(width: size.width * 0.75 / 2 + 8,initial: server.website, onSuccessful: (s) => server.website = s, label: "Website", validator: (s) {
+                    child: ValidatingTextfield(width: size.width * 0.75 / 2 - 8 ,initial: server.website, onSuccessful: (s) => server.website = s, label: "Website", validator: (s) {
                       try {
                         return isURL(s, requireProtocol: true, requireTld: true, protocols: ["http", "https"]);
                       } catch (ignored) {
@@ -112,7 +131,7 @@ class _CreateRouteState extends State<CreateRoute> {
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      child: ValidatingTextfield(width: size.width * 0.75 / 2 + 8,initial: server.discord, onSuccessful: (s) => server.discord = s, label: "Discord", validator: (s) {
+                      child: ValidatingTextfield(width: size.width * 0.75 / 2 - 8,initial: server.discord, onSuccessful: (s) => server.discord = s, label: "Discord", validator: (s) {
                         try {
                           return isURL(s, requireProtocol: true, requireTld: true, protocols: ["http", "https"], hostWhitelist: ["discord.gg", "discord.com", "discordapp.com"]);
                         } catch (ignored) {
@@ -125,7 +144,7 @@ class _CreateRouteState extends State<CreateRoute> {
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      child: ValidatingTextfield(width: size.width * 0.75 / 2 + 8,initial: server.mail, onSuccessful: (s) => server.mail = s, label: "E-Mail", validator: (s) {
+                      child: ValidatingTextfield(width: size.width * 0.75 / 2 - 8,initial: server.mail, onSuccessful: (s) => server.mail = s, label: "E-Mail", validator: (s) {
                         try {
                           return isEmail(s);
                         } catch (ignored) {

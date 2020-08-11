@@ -30,8 +30,8 @@ class ServerRoute extends StatefulWidget {
 
 class _ServerRouteState extends State<ServerRoute> {
 
-  static const String FALLBACK_BANNER = "https://pbs.twimg.com/media/DwfiV_fX4AAP1nf.jpg";
-  static const String ICON_FALLBACK = "https://www.fad-multigaming.de/img/bf4__server_performance_icons/server_performance_warning.jpg";
+  static const String FALLBACK_BANNER = "https://i.imgur.com/ZEKwGtU.jpg";
+  static const String ICON_FALLBACK = "https://i.imgur.com/eozgscT.jpg";
 
   Server server;
 
