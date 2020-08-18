@@ -40,22 +40,47 @@ class _TabbedViewState extends State<TabbedView>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          child: Row(children: tabbedView.navigation.map((e) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: GestureDetector(onTap: () => setState(() {index = tabbedView.navigation.indexOf(e); }),child: e,),
-          )).toList(), mainAxisAlignment: MainAxisAlignment.center,),
-          height: 60,
-          width: tabbedView.width,
-          color: ColorConstants.background.shade700,
-        ),
-        Container(
-          alignment: Alignment.topLeft,
-            child: FittedBox(child: currentTab)
-        )
-      ],
+    return LayoutBuilder(
+      builder: (ctx,con) {
+        return Container(
+          height: tabbedView.height,
+          child: Card(
+            color: ColorConstants.background[600],
+            elevation: 5,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            child: Container(
+              decoration: BoxDecoration(
+                  gradient: ColorConstants.cardGradient
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    child: Row(children: tabbedView.navigation.map((e) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: GestureDetector(onTap: () => setState(() {index = tabbedView.navigation.indexOf(e); }),child: e,),
+                    )).toList(), mainAxisAlignment: MainAxisAlignment.center,),
+                    height: 60,
+                    width: tabbedView.width,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Divider(thickness: 2,),
+                  ),
+                  Container(
+                      width: tabbedView.width,
+                      //color: ColorConstants.background.shade600,
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: ListView(children: [Container(child: currentTab,)], shrinkWrap: true,),
+                      )
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 

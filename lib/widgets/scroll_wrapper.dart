@@ -31,6 +31,7 @@ class ScrollWrapper extends StatelessWidget {
               negative: child,
               boolean: wrapScreenSize,
             ),
+            Divider(thickness: 2,),
             Footer()
           ],
         ),

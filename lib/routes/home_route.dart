@@ -5,14 +5,16 @@ import 'package:slservers/data/servers.dart';
 import 'package:slservers/main.dart';
 import 'package:slservers/models/server.dart';
 import 'package:slservers/security/auth_manager.dart';
-import 'package:slservers/widgets/appbar.dart';
+import 'package:slservers/widgets/better_checkbox.dart';
+import 'package:slservers/widgets/login_status.dart';
 import 'package:slservers/widgets/scroll_wrapper.dart';
 import 'package:slservers/widgets/server_widget.dart';
 
 class HomeRoute extends StatefulWidget {
-  HomeRoute({Key key, this.intialPage = 0}) : super(key: key);
+  HomeRoute({Key key, this.intialPage = 0, this.localized = true}) : super(key: key);
   
   int intialPage;
+  bool localized;
 
   @override
   _HomeRouteState createState() => _HomeRouteState(this);
@@ -22,7 +24,6 @@ class HomeRoute extends StatefulWidget {
 class _HomeRouteState extends State<HomeRoute> {
   
   HomeRoute parent;
-
 
   _HomeRouteState(this.parent);
 
@@ -37,7 +38,7 @@ class _HomeRouteState extends State<HomeRoute> {
   }
 
   void load() {
-    Servers.find(page: currentPage).then((value) => setState(() {
+    Servers.find(page: currentPage, localized: parent.localized).then((value) => setState(() {
       print(servers);
       servers = value.content;
       currentPage = value.current;
@@ -50,7 +51,7 @@ class _HomeRouteState extends State<HomeRoute> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: SLSAppBar(),
+      //appBar: SLSAppBar(),
       body: AuthManager(
         ignoreLogin: true,
         child: (_) => ScrollWrapper(
@@ -58,15 +59,36 @@ class _HomeRouteState extends State<HomeRoute> {
             constraints: BoxConstraints(minWidth: width, maxWidth: width, minHeight: height),
             child: Column(
               children: <Widget>[
-                /*
+
                 Container(
                   width: double.infinity,
-                  height: 100,
+                  height: 50,
                   color: ColorConstants.primary,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        LoginStatus()
+                      ],
+                    ),
+                  ),
                 ),
-                 */
+
                 Container(
                   height: 50,
+                ),
+                Container(
+                  width: 1200,
+                  alignment: Alignment.center,
+                  child: Row(
+                    children: [
+                      BetterCheckbox(value: parent.localized, label: "Localized", onChange: (boolean) {
+                        parent.localized = boolean;
+                        route(context);
+                      })
+                    ],
+                  ),
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -78,14 +100,14 @@ class _HomeRouteState extends State<HomeRoute> {
                     IconButton(icon: Icon(Icons.chevron_left), onPressed: () {
                       if (currentPage != 0) {
                         currentPage--;
-                        SLServers.router.navigateTo(context, "/list/$currentPage");
+                        route(context);
                       }
                     }),
                     Text("${currentPage + 1}  |  $pages", style: TextStyle(fontWeight: FontWeight.bold),),
                     IconButton(icon: Icon(Icons.chevron_right), onPressed: () {
                       if (currentPage + 1 < pages) {
                         currentPage++;
-                        SLServers.router.navigateTo(context, "/list/$currentPage");
+                        route(context);
                       }
                     })
                   ],
@@ -96,6 +118,10 @@ class _HomeRouteState extends State<HomeRoute> {
         ),
       ),
     );
+  }
+
+  void route(BuildContext context) {
+    SLServers.router.navigateTo(context, "/list/$currentPage" + (parent.localized?"/local":""));
   }
 
 }

@@ -34,8 +34,9 @@ class Servers {
     var user = await FirebaseAuth.instance.currentUser();
     var token = (await user.getIdToken()).token;
     print(token);
-    var response = await http.post("$API_LOCATION/server", headers: {"Authorization": "Bearer $token"}, body: jsonEncode(server.toJson()));
-    print(response);
+    var response = await http.post("$API_LOCATION/server", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"}, body: jsonEncode(server.toJson()));
+    print(response.statusCode);
+    print(response.body);
     return true;
   }
 
@@ -99,6 +100,16 @@ class Servers {
     if (server.icon != null && server.icon != "") await precacheImage(NetworkImage(server.icon), context);
     return server;
   }
+
+  static Future<List<Server>> myServers() async {
+    String token = (await (await FirebaseAuth.instance.currentUser()).getIdToken()).token;
+    var response = await http.get("$API_LOCATION/myServers",  headers: {"Authorization": "Bearer $token"});
+    print(response.body);
+    List<dynamic> servers = jsonDecode(response.body);
+    List<Server> list = servers.map((e) => Server.fromJson(e)).toList();
+    print(list.toList());
+    return list;
+  }
   
   static Future<GameInstance> gameInstance(String hashedAddress) async {
     var response = await http.get("$API_LOCATION/game/$hashedAddress");
@@ -108,7 +119,7 @@ class Servers {
   } 
 
   static Future<bool> vote(String id) async {
-    var response = await http.post("$API_LOCATION/server/$id/vote");
+    var response = await http.get("$API_LOCATION/server/$id/vote");
     return response.statusCode == 204;
   }
 

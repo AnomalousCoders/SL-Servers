@@ -61,125 +61,268 @@ class _ServerRouteState extends State<ServerRoute> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+
+
+                  /*
                   Container(
-                    width: width, height: height / 3,
+                    width: width,
                     child: Stack(
                       children: <Widget>[
-                        Image.network(server.banner??FALLBACK_BANNER, width: width, height: height / 3, fit: BoxFit.fitWidth),
+                       // Image.network(server.banner??FALLBACK_BANNER, width: width, height: height / 4, fit: BoxFit.cover),
                         IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
                           SLServers.router.pop(context);
                         })
                       ],
                     ),
                   ),
-                 Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      ConstrainedBox(
-                        constraints: BoxConstraints(minHeight: height),
-                        child: Container(
-                          width: width / 5, color: ColorConstants.background.shade600,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Container(height: 116),
-                              Text(server.name, style: GoogleFonts.raleway(fontSize: 35, fontWeight: FontWeight.w800, color: Colors.white), textAlign: TextAlign.center,),
-                              Text(server.preview, style: GoogleFonts.roboto(fontSize: 20, color: Colors.white), textAlign: TextAlign.center),
-                              Container(height: 16,),
-                              Container(
-                                width: 120,
-                                height: 60,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text("Votes", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-                                    Text("${server.votecount}", style: GoogleFonts.raleway(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.lightGreenAccent),),
+                  */
+
+                  Container(height: 32,),
+
+
+                 Container(
+                   width: width,
+                   child: Wrap(
+                     alignment: WrapAlignment.center, spacing: 32, runSpacing: 32, runAlignment: WrapAlignment.spaceEvenly,
+                      children: <Widget>[
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: width / 5,
+                              height: height / 16 * 13,
+                              child: Card(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                elevation: 5,
+                                child: Stack(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              // LinearGradient(colors: [Color(0xFFeb3349), Color(0xFFf45c43)]
+                                              gradient: ColorConstants.primaryGradient,
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: <Widget>[
+                                                Container(height: 16,),
+                                                Text("Network", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 64.0, right: 64.0, top: 32.0, bottom: 32),
+                                                  child: Container(
+                                                    child: Container(child: Image.network(server.icon??ICON_FALLBACK, fit: BoxFit.cover,), color: ColorConstants.background[700]),
+                                                    decoration: BoxDecoration(
+                                                        boxShadow: [BoxShadow(offset: Offset(1, 2), color: Colors.black45, blurRadius: 3)]
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(16.0),
+                                                  child: Text(server.name, style: GoogleFonts.raleway(fontSize: 28, fontWeight: FontWeight.w800, color: Colors.white), textAlign: TextAlign.center,),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+                                                  child: Text(server.preview, style: GoogleFonts.robotoCondensed(fontSize: 18,color: Colors.white, fontWeight: FontWeight.w400), textAlign: TextAlign.center),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            gradient: ColorConstants.cardGradient
+                                          ),
+                                          width: width / 5,
+                                          child: Column(
+                                            children: [
+                                              Container(height: 32,),
+                                              Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Text("Votes", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
+                                                  Text("${server.votecount}", style: GoogleFonts.raleway(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.lightGreenAccent),),
+                                                ],
+                                              ),
+                                              Container(
+                                                width: 120,
+                                                child: RaisedButton(child: Text("Vote", style: GoogleFonts.raleway(fontSize: 20, fontWeight: FontWeight.w600),), onPressed: () async {
+                                                  bool success = await Servers.vote(server.id);
+                                                  if (success) {
+                                                    sendToast(context, "Your vote has been registered!", Colors.green);
+                                                  } else {
+                                                    sendToast(context, "You already voted for this server", Colors.redAccent);
+                                                  }
+                                                }, color: Colors.green),
+                                              ),
+                                              Container(height: 32,),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
-                              Container(
-                                width: 120,
-                                child: RaisedButton(child: Text("Vote", style: GoogleFonts.raleway(fontSize: 20, fontWeight: FontWeight.w600),), onPressed: () async {
-                                  bool success = await Servers.vote(server.id);
-                                  if (success) {
-                                    sendToast(context, "Your vote has been registered!", Colors.green);
-                                  } else {
-                                    sendToast(context, "You already voted for this server", Colors.redAccent);
-                                  }
-                                }, color: Colors.green),
+                            ),
+                            Container(padding: EdgeInsets.all(16),),
+                            Container(
+                              width: width / 4 * 2.5,
+                              height: height / 16 * 13,
+                              alignment: Alignment.topCenter,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  TabbedView(navigation: <Widget>[
+                                    Text("Home", style: GoogleFonts.roboto(fontWeight: FontWeight.bold)),
+                                    Text("Rules", style: GoogleFonts.roboto(fontWeight: FontWeight.bold)),
+                                  ], widgets: [
+                                        () => Container(width:  width / 4 * 2.5,child: HtmlWidget(md.markdownToHtml(server.description,extensionSet: md.ExtensionSet.commonMark, inlineOnly: false))),
+                                        () {
+                                      int i = 1;
+                                      return Column(
+                                        children: <Widget>[
+                                          Container(height: 16),
+                                          Text("Rules", style: GoogleFonts.raleway(fontSize: 35, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.center,),
+                                          Container(
+                                            width: width / 6 * 3,
+                                            child: Container(
+                                              width: width / 6 * 2,
+                                              child: Column(children: server.rules.map((e) => Row(children: <Widget>[
+                                                Text("${i++}. ", style: GoogleFonts.roboto(fontSize: 30, color: Colors.white70),),
+                                                Text(e, style: GoogleFonts.raleway(fontSize: 20))
+                                              ], crossAxisAlignment: CrossAxisAlignment.center,)).toList(), crossAxisAlignment: CrossAxisAlignment.center),
+                                            ),
+                                          ),
+                                          Container(height: 16),
+                                        ],
+                                      );
+                                    }
+                                  ], width: width / 6 * 4, height:  height / 16 * 13,),
+                                ],
                               ),
-                              Container(height: 16,),
-                              Text("Servers", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: server.instanceRefs.map((e) => InstanceWidget(instance: e, sendToast: (x,y) => this.sendToast(context, x, y),)).toList(),
-                                ),
+                            ),
+                          ],
+                        ),
+
+                        Container(
+                          width: width / 5 * 1.68,
+                          constraints: BoxConstraints(minHeight: 250),
+                          child: Card(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            elevation: 5,
+                            color: ColorConstants.background[600],
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  gradient: ColorConstants.cardGradient
                               ),
-                              Container(height: 16,),
-                              Text("Tags", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8),
-                                child: GridView.count(crossAxisCount: 3, scrollDirection: Axis.vertical,
-                                  children: server.tags.map((e) => Tags.parse(e)).toList(),
-                                  crossAxisSpacing: 8, mainAxisSpacing: 8, shrinkWrap: true,childAspectRatio: 3.5 / 1,),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text("Servers", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      children: server.instanceRefs.map((e) => InstanceWidget(instance: e, sendToast: (x,y) => this.sendToast(context, x, y),)).toList(),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Container(height: 16,),
-                              Text("Contact", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-                              _discordButton(),
-                              _webButton(),
-                              _emailButton(),
-                              Container(height: 16,)
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          TabbedView(navigation: <Widget>[
-                            Text("Home"),
-                            Text("Rules"),
-                          ], widgets: [
-                                () => Container(
-                                  width: width / 5 * 4,
-                                  //height: height - 60,
-                                  child: HtmlWidget(
-                                    md.markdownToHtml(server.description,extensionSet: md.ExtensionSet.commonMark, inlineOnly: false),
+
+                        Container(
+                          width: width / 5 * 1.22,
+                          constraints: BoxConstraints(minHeight: 250),
+                          child: Card(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            elevation: 5,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  gradient: ColorConstants.cardGradient
+                              ),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text("Tags", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
                                   ),
-                                ),
-                                () {
-                                  int i = 1;
-                                  return Column(
-                                    children: <Widget>[
-                                      Container(height: 16),
-                                      Text("Rules", style: GoogleFonts.raleway(fontSize: 35, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.center,),
-                                      Container(
-                                        width: width / 5 * 3,
-                                        child: Column(children: server.rules.map((e) => Row(children: <Widget>[
-                                          Text("${i++}. ", style: GoogleFonts.roboto(fontSize: 30, color: Colors.white70),),
-                                          Text(e, style: GoogleFonts.raleway(fontSize: 20),)
-                                        ], crossAxisAlignment: CrossAxisAlignment.center,)).toList(), crossAxisAlignment: CrossAxisAlignment.start),
-                                      ),
-                                    ],
-                                  );
-                                }
-                          ], width: width / 5 * 4, height: height,),
-                        ],
-                      )
-                    ],
-                  )
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8),
+                                          child: GridView.count(crossAxisCount: 3, scrollDirection: Axis.vertical,
+                                            children: server.tags.map((e) => Tags.parse(e)).toList(),
+                                            crossAxisSpacing: 8, mainAxisSpacing: 8, shrinkWrap: true,childAspectRatio: 3.5 / 1,),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        Container(
+                          width: width / 5 * 1.15,
+                          constraints: BoxConstraints(minHeight: 250),
+                          child: Card(
+                            color: ColorConstants.background[600],
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  gradient: ColorConstants.cardGradient
+                              ),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text("Contact", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      children: [
+                                        _discordButton(),
+                                        _webButton(),
+                                        _emailButton(),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+
+                      ],
+                    ),
+                 ),
+
+                  Container(height: 128,),
                 ],
               ),
+
+              /*
               Positioned(
                 top: (height / 3) - 100,
                 left: ((width / 5) - 200) / 2,
                   child: Image.network(server.icon??ICON_FALLBACK, width: 200, height: 200, fit: BoxFit.cover,)
               )
+
+               */
             ],
           ),
         ),

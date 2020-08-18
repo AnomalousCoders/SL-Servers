@@ -27,7 +27,7 @@ class _BetterCheckboxState extends State<BetterCheckbox> {
         Checkbox(value: parent.value, onChanged: (b) {
           setState(() {});
           parent.value = b;
-          parent.onChange = (b) {};
+          parent.onChange(b);
         }, tristate: false, activeColor: Colors.lightGreen,),
         Text(parent.label, style: GoogleFonts.raleway(color: Colors.white70),)
       ],

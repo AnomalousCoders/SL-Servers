@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:slservers/widgets/sync_switch_widget.dart';
 
 class ValidatingTextfield extends StatefulWidget {
-  ValidatingTextfield({Key key, this.width, this.initial, this.label, this.validator, this.onSuccessful, this.refactor}) : super(key: key);
+  ValidatingTextfield({Key key, this.width, this.initial, this.label = "", this.helper = "", this.validator, this.onSuccessful, this.refactor}) : super(key: key);
 
   String initial;
   String label;
+  String helper;
   double width;
   Function(String) onSuccessful;
   bool Function(String) validator;
@@ -47,7 +48,7 @@ class _ValidatingTextfieldState extends State<ValidatingTextfield> {
               }
               if (parent.validator(s)) parent.onSuccessful(s);
               this.setState(() { });
-            }, decoration: InputDecoration(labelText: parent.label, border: OutlineInputBorder(), filled: true, fillColor: Colors.black12),),
+            }, decoration: InputDecoration(labelText: parent.label, border: OutlineInputBorder(), filled: true, fillColor: Colors.black12, helperText: parent.helper),),
           ),
           Container(
             width: parent.width / 10 * 2,

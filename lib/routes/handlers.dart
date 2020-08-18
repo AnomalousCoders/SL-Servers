@@ -27,7 +27,18 @@ class ListHandler extends Handler {
   ListHandler() : super(handlerFunc: (BuildContext context, Map<String,dynamic> params) {
       int page = int.parse(params["page"][0]);
       print("Loaded page $page");
-      return HomeRoute(intialPage: page,);
+      return HomeRoute(intialPage: page, localized: false,);
+  });
+
+}
+
+
+class LocalizedListHandler extends Handler {
+
+  LocalizedListHandler() : super(handlerFunc: (BuildContext context, Map<String,dynamic> params) {
+    int page = int.parse(params["page"][0]);
+    print("Loaded page $page");
+    return HomeRoute(intialPage: page, localized: true,);
   });
 
 }
