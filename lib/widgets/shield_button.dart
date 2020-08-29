@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:slservers/main.dart';
 
 class ShieldButton extends StatelessWidget {
 
@@ -14,7 +13,7 @@ class ShieldButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(360),
+      borderRadius: BorderRadius.circular(8),
       clipBehavior: Clip.hardEdge,
       child: Container(
         width: width,
@@ -25,16 +24,19 @@ class ShieldButton extends StatelessWidget {
               alignment: Alignment.center,
               width: width / 7 * 2,
               height: height,
-              color: color,
               child: icon,
+              decoration: BoxDecoration(
+                color: color,
+                boxShadow: [BoxShadow(color: color, blurRadius: 50, offset: Offset(10,0))]
+              ),
             ),
-            Container(
-              color: ColorConstants.background.shade400,
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(left: 16),
-              width: width / 7 * 5,
-              height: height,
-              child: text,
+            Expanded(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(left: 16),
+                height: height,
+                child: text,
+              ),
             )
           ],
         ),

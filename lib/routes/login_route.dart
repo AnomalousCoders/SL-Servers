@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:slservers/main.dart';
 import 'package:slservers/security/auth_manager.dart';
+import 'package:slservers/widgets/login_buttons.dart';
 import 'package:slservers/widgets/scroll_wrapper.dart';
 import 'package:slservers/widgets/sync_switch_widget.dart';
 
@@ -26,7 +27,7 @@ class _LoginRouteState extends State<LoginRoute> {
 
   GlobalKey scaffold = GlobalKey(debugLabel: "LoginScaffold");
 
-  StreamSubscription<FirebaseUser> streamSub;
+  StreamSubscription<User> streamSub;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,7 @@ class _LoginRouteState extends State<LoginRoute> {
               positive: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Image.network("https://i.imgur.com/TJobSns.jpg", fit: BoxFit.fitWidth, width: width * 0.1),
+                  Image.network("https://imgur.com/tRBL0DB.png", fit: BoxFit.fitWidth, width: width * 0.1),
                   Container(
                     height: 16,
                   ),
@@ -128,7 +129,7 @@ class _LoginRouteState extends State<LoginRoute> {
 
                                 if (complete) {
                                   try {
-                                    AuthResult result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+                                    UserCredential result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
                                     _username = null;
                                     _email = null;
                                     _password = null;
@@ -137,9 +138,7 @@ class _LoginRouteState extends State<LoginRoute> {
                                       throw Exception("FirebaseUser is null");
                                     }
 
-                                    UserUpdateInfo update = UserUpdateInfo();
-                                    update.displayName =_username;
-                                    await result.user.updateProfile(update);
+                                    await result.user.updateProfile(displayName: _username);
                                     _loginSuccessful(context);
                                     print("Token: ${result.user.getIdToken()}");
                                     Navigator.pushReplacementNamed(context, AuthManager.getAfterLoginOnce());
@@ -170,7 +169,7 @@ class _LoginRouteState extends State<LoginRoute> {
               negative: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Image.network("https://i.imgur.com/TJobSns.jpg", fit: BoxFit.fitWidth, width: width * 0.1),
+                  Image.network("https://imgur.com/tRBL0DB.png", fit: BoxFit.fitWidth, width: width * 0.1),
                   Container(
                     height: 16,
                   ),
@@ -216,7 +215,7 @@ class _LoginRouteState extends State<LoginRoute> {
                                 bool complete = _email != null && _password != null;
 
                                 if (complete) {
-                                  AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
+                                  UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
                                   _username = null;
                                   _email = null;
                                   _password = null;
@@ -227,7 +226,7 @@ class _LoginRouteState extends State<LoginRoute> {
                                   }
 
                                   _loginSuccessful(context);
-                                  print("Token: ${(await result.user.getIdToken()).token}");
+                                  print("Token: ${(await result.user.getIdToken())}");
                                   Navigator.pushReplacementNamed(context, AuthManager.getAfterLoginOnce());
                                   return;
                                 } else {
@@ -244,6 +243,20 @@ class _LoginRouteState extends State<LoginRoute> {
                               }),
                             ),
                           ],
+                        ),
+
+                        Divider(thickness: 2,),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
+                          child: Container(
+                            width: width * 0.2,
+                            child: google(context, () async {
+                              var result = await FirebaseAuth.instance.signInWithPopup(GoogleAuthProvider());
+                              print("Token: ${(await result.user.getIdToken())}");
+                              Navigator.pushReplacementNamed(context, AuthManager.getAfterLoginOnce());
+                            }),
+                          ),
                         )
                       ],
                     ),
@@ -261,7 +274,8 @@ class _LoginRouteState extends State<LoginRoute> {
   @override
   void initState() {
     super.initState();
-    streamSub = FirebaseAuth.instance.onAuthStateChanged.listen((event) {
+    streamSub = FirebaseAuth.instance.authStateChanges().listen((event) {
+      if (event==null)return;
       if (event.isAnonymous) return;
       Navigator.pushReplacementNamed(context, AuthManager.afterLogin??"/");
     });

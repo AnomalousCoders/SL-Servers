@@ -37,6 +37,7 @@ class _ValidatingTextfieldState extends State<ValidatingTextfield> {
     return Container(
       width: parent.width,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
             width: parent.width / 10 * 8,

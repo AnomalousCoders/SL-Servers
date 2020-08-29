@@ -8,7 +8,7 @@ class AuthManager extends StatefulWidget {
 
   static String afterLogin = "/";
 
-  static FirebaseUser user;
+  static User user;
 
   final Widget Function(BuildContext) child;
 
@@ -49,7 +49,7 @@ class _AuthManagerState extends State<AuthManager> {
   }
 
   Future<bool> checkAuthorized() async {
-    AuthManager.user = await FirebaseAuth.instance.currentUser();
+    AuthManager.user = FirebaseAuth.instance.currentUser;
     if (AuthManager.user==null) return false;
     return true;
   }

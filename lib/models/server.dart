@@ -52,6 +52,7 @@ class Server {
   List<Comment> _comments;
   String _vaddress;
   int _vport;
+  int _score;
 
   String get id => _id;
   String get owner => _owner;
@@ -78,6 +79,7 @@ class Server {
   List<Comment> get comments => _comments;
   String get vaddress => _vaddress;
   int get vport => _vport;
+  int get score => _score;
 
 
   set id(String value) {
@@ -111,7 +113,8 @@ class Server {
       int maxplayers, 
       List<Comment> comments,
       String vaddress, 
-      int vport}){
+      int vport,
+      int score}){
     _id = id;
     _owner = owner;
     _name = name;
@@ -137,6 +140,7 @@ class Server {
     _comments = comments;
     _vaddress = vaddress;
     _vport = vport;
+    _score = score;
 }
 
   Server.fromJson(dynamic json) {
@@ -170,6 +174,7 @@ class Server {
     }
     _vaddress = json["vaddress"];
     _vport = json["vport"];
+    _score = json["score"];
   }
 
   Map<String, dynamic> toJson() {
@@ -201,6 +206,7 @@ class Server {
     }
     map["vaddress"] = _vaddress;
     map["vport"] = _vport;
+    map["score"] = _score;
     return map;
   }
 
@@ -288,5 +294,11 @@ class Comment {
     map["timestamp"] = _timestamp;
     return map;
   }
+
+}
+
+extension ServerExtension on Server {
+
+  String get iconUrl => icon != null ? "https://i.imgur.com/$icon.jpg" : null;
 
 }

@@ -15,7 +15,7 @@ import 'package:slservers/models/server_response.dart';
 class Servers {
 
   //"https://virtserver.swaggerhub.com/Helight/SLServers/1.0.0"
-  static const String API_LOCATION = "http://localhost:8080";
+  static const String API_LOCATION = "https://api.slservers.eu";
 
   static Future<PaginatedServerResponse> find({int page = 0, bool localized = true}) async {
     var response;
@@ -31,13 +31,32 @@ class Servers {
 
 
   static Future<bool> create(Server server) async {
-    var user = await FirebaseAuth.instance.currentUser();
-    var token = (await user.getIdToken()).token;
-    print(token);
+    var user = FirebaseAuth.instance.currentUser;
+    var token = (await user.getIdToken());
     var response = await http.post("$API_LOCATION/server", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"}, body: jsonEncode(server.toJson()));
-    print(response.statusCode);
-    print(response.body);
     return true;
+  }
+
+  static Future<bool> update(Server server) async {
+    var user = FirebaseAuth.instance.currentUser;
+    var token = (await user.getIdToken());
+    var response = await http.put("$API_LOCATION/server", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"}, body: jsonEncode(server.toJson()));
+    return true;
+  }
+
+  static Future<bool> delete(Server server) async {
+    var user = FirebaseAuth.instance.currentUser;
+    var token = (await user.getIdToken());
+    var response = await http.delete("$API_LOCATION/server?server=${server.id}", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"});
+    return true;
+  }
+
+  static Future<String> registerServer(Server server, String address) async {
+    var user = FirebaseAuth.instance.currentUser;
+    var token = (await user.getIdToken());
+    var response = await http.post("$API_LOCATION/server/${server.id}/registerInstance", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"}, body: address);
+    Map<String,dynamic> json = jsonDecode(response.body);
+    return json["verToken"];
   }
 
   static Future<Server> _get(String id) async {
@@ -102,7 +121,7 @@ class Servers {
   }
 
   static Future<List<Server>> myServers() async {
-    String token = (await (await FirebaseAuth.instance.currentUser()).getIdToken()).token;
+    String token = (await (FirebaseAuth.instance.currentUser).getIdToken());
     var response = await http.get("$API_LOCATION/myServers",  headers: {"Authorization": "Bearer $token"});
     print(response.body);
     List<dynamic> servers = jsonDecode(response.body);
@@ -119,7 +138,7 @@ class Servers {
   } 
 
   static Future<bool> vote(String id) async {
-    var response = await http.get("$API_LOCATION/server/$id/vote");
+    var response = await http.post("$API_LOCATION/server/$id/vote");
     return response.statusCode == 204;
   }
 

@@ -71,6 +71,10 @@ class _CreateRouteState extends State<CreateRoute> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(controller: TextEditingController(text: server.tags.join(",")), onChanged: (s) => server.tags = s.split(",").map((e) => e.trim()).toList(), decoration: InputDecoration(labelText: "Tags", border: OutlineInputBorder(), filled: true, fillColor: Colors.black12, helperText: "Entries are comma separated")),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(controller: TextEditingController(text: server.languages.join(",")), onChanged: (s) => server.languages = s.split(",").map((e) => e.trim()).toList(), decoration: InputDecoration(labelText: "Languages", border: OutlineInputBorder(), filled: true, fillColor: Colors.black12, helperText: "Entries are comma separated")),
                       )
                     ],
                   ),
@@ -93,7 +97,7 @@ class _CreateRouteState extends State<CreateRoute> {
                         Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
-                              child: ValidatingTextfield(width: (size.width * 0.75 / 2 - 16) ,initial: server.icon, onSuccessful: (s) => server.icon = s, label: "Icon", helper: "Imgur url of your server icon. Upload your icon to imgur, click on the copy button and paste the url here", validator: (s) {
+                              child: ValidatingTextfield(width: (size.width * 0.75 / 2 - 16) ,initial: server.icon, onSuccessful: (s) => server.icon = s, label: "Icon", helper: "Imgur url of your server icon. Upload your icon to imgur, click on the copy button\nand paste the url here", validator: (s) {
                                 return isAlphanumeric(s) && s.length == 7;
                               }, refactor: (s) {
                                 if (isURL(s, hostWhitelist: ["imgur.com"])) {
@@ -117,7 +121,7 @@ class _CreateRouteState extends State<CreateRoute> {
                         Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
-                              child: ValidatingTextfield(width: (size.width * 0.75 / 2 - 16) ,initial: server.website, onSuccessful: (s) => server.website = s, label: "Website", validator: (s) {
+                              child: ValidatingTextfield(width: (size.width * 0.75 / 2 - 16) ,initial: server.website, onSuccessful: (s) => server.website = s, label: "Website", helper: "(optional) The Link to your website", validator: (s) {
                                 try {
                                   return isURL(s, requireProtocol: true, requireTld: true, protocols: ["http", "https"]);
                                 } catch (ignored) {
@@ -130,7 +134,7 @@ class _CreateRouteState extends State<CreateRoute> {
                         Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
-                              child: ValidatingTextfield(width: (size.width * 0.75 / 2 - 16),initial: server.discord, onSuccessful: (s) => server.discord = s, label: "Discord", helper: "The link to your discord server",validator: (s) {
+                              child: ValidatingTextfield(width: (size.width * 0.75 / 2 - 16),initial: server.discord, onSuccessful: (s) => server.discord = s, label: "Discord", helper: "(optional) The link to your discord server",validator: (s) {
                                 try {
                                   return isURL(s, requireProtocol: true, requireTld: true, protocols: ["http", "https"], hostWhitelist: ["discord.gg", "discord.com", "discordapp.com"]);
                                 } catch (ignored) {
@@ -143,7 +147,7 @@ class _CreateRouteState extends State<CreateRoute> {
                         Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
-                              child: ValidatingTextfield(width: (size.width * 0.75 / 2 - 16),initial: server.mail, onSuccessful: (s) => server.mail = s, label: "E-Mail", validator: (s) {
+                              child: ValidatingTextfield(width: (size.width * 0.75 / 2 - 16),initial: server.mail, onSuccessful: (s) => server.mail = s, label: "E-Mail", helper: "(optional) An email for your server", validator: (s) {
                                 try {
                                   return isEmail(s);
                                 } catch (ignored) {
@@ -171,7 +175,13 @@ class _CreateRouteState extends State<CreateRoute> {
                 Container(height: 16,),
                 RaisedButton(child: Text("Save"), onPressed: () async {
                   print(jsonEncode(server.toJson()));
-                  await Servers.create(server);
+
+                  if (server.id != null) {
+                    await Servers.update(server);
+                  } else {
+                    await Servers.create(server);
+                  }
+
                   Navigator.pushReplacementNamed(context, "/");
                 }),
                 Container(height: 64,)

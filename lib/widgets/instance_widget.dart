@@ -52,12 +52,14 @@ class _InstanceWidgetState extends State<InstanceWidget> {
                       Text("Server IP", style: GoogleFonts.raleway(color: Colors.white70, fontWeight: FontWeight.bold),),
                       Row(
                         children: <Widget>[
-                          Text(instance.address, style: GoogleFonts.roboto(fontSize: 20)),
+                          Text(instance.address??"invalid", style: GoogleFonts.roboto(fontSize: 20)),
                           //Container(width: 8,),
-                          IconButton(onPressed: () {
-                            parent.sendToast("Copied Address to Clipboard", Colors.blue);
-                            Clipboard.setData(ClipboardData(text: instance.address));
-                          }, icon: Icon(Icons.content_copy, size: 20,), color: Colors.white70,)
+                          MouseRegion(
+                            child: IconButton(onPressed: () {
+                              parent.sendToast("Copied Address to Clipboard", Colors.blue);
+                              Clipboard.setData(ClipboardData(text: instance.address));
+                            }, icon: Icon(Icons.content_copy, size: 20,), color: Colors.white70,),
+                          )
                         ],
                       ),
                     ],
@@ -68,7 +70,7 @@ class _InstanceWidgetState extends State<InstanceWidget> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text("Players", style: GoogleFonts.raleway(color: Colors.white70, fontWeight: FontWeight.bold),),
-                        Text("${instance.players}/${instance.maxplayers}", style: GoogleFonts.roboto(fontSize: 20, color: instance.maxplayers - instance.players == 0 ? Colors.redAccent : Colors.white)),
+                        Text("${instance.players??0}/${instance.maxplayers??0}", style: GoogleFonts.roboto(fontSize: 20, color: instance.maxplayers - instance.players == 0 ? Colors.redAccent : Colors.white)),
                       ],
                     ),
                   ),
@@ -91,7 +93,7 @@ class _InstanceWidgetState extends State<InstanceWidget> {
                           children: <Widget>[
                             Text("Version", style: GoogleFonts.raleway(color: Colors.white38, fontWeight: FontWeight.bold),textAlign: TextAlign.start,),
                             Container(height: 4,),
-                            Text(instance.version, style: GoogleFonts.roboto(fontSize: 15, color: Colors.white70),),
+                            Text(instance.version??"none", style: GoogleFonts.roboto(fontSize: 15, color: Colors.white70),),
                           ],
                         ),
                       ),
@@ -101,7 +103,7 @@ class _InstanceWidgetState extends State<InstanceWidget> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text("NW Verified", style: GoogleFonts.raleway(color: Colors.white38, fontWeight: FontWeight.bold),textAlign: TextAlign.start),
-                            Icon(instance.verified ? Icons.check : Icons.clear, color: Colors.white70,)
+                            Icon(instance.verified??false ? Icons.check : Icons.clear, color: Colors.white70,)
                           ],
                         ),
                       ),
@@ -111,7 +113,7 @@ class _InstanceWidgetState extends State<InstanceWidget> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text("FriendlyFire", style: GoogleFonts.raleway(color: Colors.white38, fontWeight: FontWeight.bold),textAlign: TextAlign.start),
-                            Icon(instance.ff ? Icons.check : Icons.clear, color: Colors.white70)
+                            Icon(instance.ff??false ? Icons.check : Icons.clear, color: Colors.white70)
                           ],
                         ),
                       ),

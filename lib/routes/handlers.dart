@@ -2,6 +2,8 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:slservers/data/servers.dart';
+import 'package:slservers/models/server.dart';
+import 'package:slservers/routes/create_route.dart';
 import 'package:slservers/routes/home_route.dart';
 import 'package:slservers/routes/server_route.dart';
 
@@ -39,6 +41,24 @@ class LocalizedListHandler extends Handler {
     int page = int.parse(params["page"][0]);
     print("Loaded page $page");
     return HomeRoute(intialPage: page, localized: true,);
+  });
+
+}
+
+class EditHandler extends Handler {
+
+  EditHandler() : super(handlerFunc: (BuildContext context, Map<String,dynamic> params) {
+    String page = params["network"][0];
+    return FutureBuilder(
+      builder: (ctx,dat) {
+        if (dat.connectionState == ConnectionState.done) {
+          var server = (dat.data as List<Server>).firstWhere((element) => element.id == page);
+          return CreateRoute(initial: server,);
+        }
+        return Container();
+      },
+      future: Servers.myServers(),
+    );
   });
 
 }

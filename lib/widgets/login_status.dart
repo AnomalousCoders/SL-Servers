@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:slservers/security/auth_manager.dart';
@@ -13,12 +14,12 @@ class LoginStatus extends StatefulWidget {
 
 class _LoginStatusState extends State<LoginStatus> {
 
-  FirebaseUser user;
-  StreamSubscription<FirebaseUser> subscription;
+  User user;
+  StreamSubscription<User> subscription;
 
   @override
   void initState() {
-    subscription = FirebaseAuth.instance.onAuthStateChanged.listen((event) {
+    subscription = FirebaseAuth.instance.authStateChanges().listen((event) {
       load();
     });
     super.initState();
@@ -26,24 +27,31 @@ class _LoginStatusState extends State<LoginStatus> {
   }
 
   void load() async {
-    user = await FirebaseAuth.instance.currentUser();
+    user = FirebaseAuth.instance.currentUser;
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     if (user == null) {
-      return IconButton(icon: Icon(Icons.vpn_key, size: 30,), onPressed: () {
-        AuthManager.afterLogin = "/";
-        Navigator.of(context).pushReplacementNamed("/login");
-      });
+      return Row(
+        children: [
+          IconButton(icon: Icon(Icons.vpn_key, size: 30,), onPressed: () {
+            AuthManager.afterLogin = "/";
+            Navigator.of(context).pushReplacementNamed("/login");
+          }),
+        ],
+      );
     } else {
      return Row(
        children: [
-         IconButton(icon: Icon(Icons.create, size: 30), onPressed: () {
+         IconButton(icon: Icon(EvaIcons.fileAdd, size: 30), onPressed: () {
            Navigator.of(context).pushNamed("/create");
          }),
-         IconButton(icon: Icon(Icons.person, size: 30,), onPressed: () {
+         IconButton(icon: Icon(EvaIcons.hardDriveOutline, size: 30), onPressed: () {
+           Navigator.of(context).pushNamed("/myServers");
+         }),
+         IconButton(icon: Icon(EvaIcons.person, size: 30,), onPressed: () {
 
          }),
        ],

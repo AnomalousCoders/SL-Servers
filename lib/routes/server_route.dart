@@ -2,8 +2,8 @@ import 'dart:html';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_cursor/flutter_cursor.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:markdown/markdown.dart' as md;
@@ -14,6 +14,7 @@ import 'package:slservers/security/auth_manager.dart';
 import 'package:slservers/widgets/href.dart';
 import 'package:slservers/widgets/instance_widget.dart';
 import 'package:slservers/widgets/scroll_wrapper.dart';
+import 'package:slservers/widgets/server_numerics.dart';
 import 'package:slservers/widgets/shield_button.dart';
 import 'package:slservers/widgets/sync_switch_widget.dart';
 import 'package:slservers/widgets/tabbed_view.dart';
@@ -44,6 +45,9 @@ class _ServerRouteState extends State<ServerRoute> {
 
     if (server == null) {
       print("Server not found");
+    } else {
+      print(server.toJson());
+      print(server.iconUrl);
     }
 
     double width = MediaQuery.of(context).size.width;
@@ -114,7 +118,7 @@ class _ServerRouteState extends State<ServerRoute> {
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 64.0, right: 64.0, top: 32.0, bottom: 32),
                                                   child: Container(
-                                                    child: Container(child: Image.network(server.icon??ICON_FALLBACK, fit: BoxFit.cover,), color: ColorConstants.background[700]),
+                                                    child: Container(child: Image.network(server.iconUrl??ICON_FALLBACK, fit: BoxFit.cover,), color: ColorConstants.background[700]),
                                                     decoration: BoxDecoration(
                                                         boxShadow: [BoxShadow(offset: Offset(1, 2), color: Colors.black45, blurRadius: 3)]
                                                     ),
@@ -140,12 +144,13 @@ class _ServerRouteState extends State<ServerRoute> {
                                           child: Column(
                                             children: [
                                               Container(height: 32,),
-                                              Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: <Widget>[
-                                                  Text("Votes", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-                                                  Text("${server.votecount}", style: GoogleFonts.raleway(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.lightGreenAccent),),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  PlayersField(server),
+                                                  CapacityField(server),
+                                                  VotesField(server),
+                                                  ScoreField(server)
                                                 ],
                                               ),
                                               Container(
@@ -157,7 +162,7 @@ class _ServerRouteState extends State<ServerRoute> {
                                                   } else {
                                                     sendToast(context, "You already voted for this server", Colors.redAccent);
                                                   }
-                                                }, color: Colors.green),
+                                                }, splashColor: Colors.green, color: Colors.lightGreen),
                                               ),
                                               Container(height: 32,),
                                             ],
@@ -343,7 +348,7 @@ class _ServerRouteState extends State<ServerRoute> {
             child: ShieldButton(color: Color(0xFF7289DA), icon: Padding(
               padding: const EdgeInsets.only(left:6, top: 6),
               child: Image.network("https://discord.com/assets/28174a34e77bb5e5310ced9f95cb480b.png"),
-            ), text: Text("DISCORD", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 20),), width: 250, height: 40,),
+            ), text: Text("Discord", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 20),), width: 250, height: 40,),
           ),
         ),
       ),
@@ -356,15 +361,17 @@ class _ServerRouteState extends State<ServerRoute> {
     List<String> mailSpit = server.mail.split("@");
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: HoverCursor(
-        cursor: Cursor.copy,
-        child: GestureDetector(
-            onTap: () {
-              sendToast(context, "Copied E-Mail to Clipboard", Colors.blue);
-              Clipboard.setData(ClipboardData(text: server.mail));
-            },
-            child: ShieldButton(color: Color(0xFFD83B3B), icon: Icon(Icons.email, size: 30,), text: Text("${mailSpit[0]}\n@${mailSpit[1]}", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 15),), width: 250, height: 40,)
-        ),
+      child: GestureDetector(
+          onTap: () {
+            sendToast(context, "Copied E-Mail to Clipboard", Colors.blue);
+            Clipboard.setData(ClipboardData(text: server.mail));
+          },
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: Tooltip(message: server.mail,
+                child: ShieldButton(color: Color(0xFFD83B3B), icon: Icon(Icons.email, size: 30,), text: Text("E-Mail", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 20),), width: 250, height: 40,)
+            ),
+          )
       ),
     );
   }

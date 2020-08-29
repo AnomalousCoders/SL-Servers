@@ -16,10 +16,11 @@ class Footer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
+              Href(child: Text("Discord", style: GoogleFonts.raleway(fontWeight: FontWeight.bold),), href: "https://discord.gg/R56zgsy",),
               Href(child: Text("Impressum", style: GoogleFonts.raleway(fontWeight: FontWeight.bold),), href: "/impressum.html",)
-            ],
+           ],
           )
         ],
       ),

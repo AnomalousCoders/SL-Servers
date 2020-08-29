@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,12 +10,11 @@ import 'package:slservers/routes/manage_server_route.dart';
 import 'models/server.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(SLServers());
 }
 
 class SLServers extends StatelessWidget {
-
-  static FirebaseApp firebase = FirebaseApp(name: "SL Servers");
 
   static Server currentlySelectedServer;
 
@@ -27,6 +25,7 @@ class SLServers extends StatelessWidget {
     _defineRoutes(router);
     return MaterialApp(
       title: 'SL Servers',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
 
@@ -35,8 +34,8 @@ class SLServers extends StatelessWidget {
         backgroundColor: ColorConstants.background,
         scaffoldBackgroundColor: ColorConstants.background[700],
 
-        tooltipTheme: TooltipThemeData(textStyle: GoogleFonts.raleway(color: Colors.white), decoration: BoxDecoration(
-          color: ColorConstants.background.shade400
+        tooltipTheme: TooltipThemeData(textStyle: GoogleFonts.openSans(color: Colors.white), decoration: BoxDecoration(
+          color: ColorConstants.background[800]
         ), padding: EdgeInsets.all(8)),
 
 
@@ -57,6 +56,7 @@ class SLServers extends StatelessWidget {
     router.define("/server/:server", handler: ServerHandler(), transitionType: TransitionType.fadeIn);
     router.define("/list/:page", handler: ListHandler(), transitionType: TransitionType.fadeIn);
     router.define("/list/:page/local", handler: LocalizedListHandler(), transitionType: TransitionType.fadeIn);
+    router.define("/edit/:network", handler: EditHandler(), transitionType: TransitionType.fadeIn);
   }
 
 }
@@ -100,9 +100,7 @@ class ColorConstants {
   //    800: Color(0xFFeb3349),
   //    900: Color(0xFFeb3349),
 
-  static const MaterialColor primary = MaterialColor(0xFF7289DA, {
-
-  });
+  static const MaterialColor primary = MaterialColor(0xFF7289DA, {});
 
   static Gradient primaryGradient = LinearGradient(colors: [Color(0xFF7289DA), Color(0xFF8ea1e1)]);
   //static Gradient primaryGradient = LinearGradient(colors: [Color(0xFFeb3349), Color(0xFFf45c43)]);

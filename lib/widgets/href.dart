@@ -1,7 +1,7 @@
-import 'dart:html' as html;
+import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_cursor/flutter_cursor.dart';
+import 'package:flutter/rendering.dart';
 
 class Href extends StatelessWidget {
 
@@ -16,11 +16,11 @@ class Href extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        html.window.location.href = href;
+        js.context.callMethod("open", [href]);
       },
-        child: HoverCursor(
-          cursor: Cursor.pointer,
-            child: child
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: child,
         )
     );
   }
