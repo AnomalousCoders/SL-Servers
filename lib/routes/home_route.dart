@@ -20,7 +20,6 @@ class HomeRoute extends StatefulWidget {
   _HomeRouteState createState() => _HomeRouteState(this);
 }
 
-//TODO HOMEPAGE
 class _HomeRouteState extends State<HomeRoute> {
   
   HomeRoute parent;
