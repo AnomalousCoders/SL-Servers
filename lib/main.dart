@@ -74,36 +74,9 @@ class ColorConstants {
     800: Color.fromARGB(255, 0,0,0),
   });
 
-  /*
-  static const MaterialColor primary = MaterialColor(0xffBB0011, {
-    50: Color(0xffF7E0E2),
-    100: Color(0xffEBB3B8),
-    200: Color(0xffDD8088),
-    300: Color(0xffCF4D58),
-    400: Color(0xffC52635),
-    500: Color(0xffBB0011),
-    600: Color(0xffB5000F),
-    700: Color(0xffAC000C),
-    800: Color(0xffA4000A),
-    900: Color(0xff960005),
-  });
-  */
-
-  //    50: Color(0xFFeb3349),
-  //    100: Color(0xFFeb3349),
-  //    200: Color(0xFFeb3349),
-  //    300: Color(0xFFeb3349),
-  //    400: Color(0xFFeb3349),
-  //    500: Color(0xFFeb3349),
-  //    600: Color(0xFFeb3349),
-  //    700: Color(0xFFeb3349),
-  //    800: Color(0xFFeb3349),
-  //    900: Color(0xFFeb3349),
-
   static const MaterialColor primary = MaterialColor(0xFF7289DA, {});
 
   static Gradient primaryGradient = LinearGradient(colors: [Color(0xFF7289DA), Color(0xFF8ea1e1)]);
-  //static Gradient primaryGradient = LinearGradient(colors: [Color(0xFFeb3349), Color(0xFFf45c43)]);
 
   static Gradient cardGradient = LinearGradient(colors: [background[600], background[500]], begin: Alignment.topCenter, end: Alignment.bottomCenter);
 
