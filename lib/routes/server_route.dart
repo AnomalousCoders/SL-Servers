@@ -13,6 +13,7 @@ import 'package:slservers/models/server.dart';
 import 'package:slservers/security/auth_manager.dart';
 import 'package:slservers/widgets/href.dart';
 import 'package:slservers/widgets/instance_widget.dart';
+import 'package:slservers/widgets/login_status.dart';
 import 'package:slservers/widgets/scroll_wrapper.dart';
 import 'package:slservers/widgets/server_numerics.dart';
 import 'package:slservers/widgets/shield_button.dart';
@@ -65,7 +66,23 @@ class _ServerRouteState extends State<ServerRoute> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-
+                  Container(
+                    width: double.infinity,
+                    height: 50,
+                    color: ColorConstants.primary,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
+                            Navigator.of(context).pushReplacementNamed("/");
+                          }),
+                          LoginStatus()
+                        ],
+                      ),
+                    ),
+                  ),
 
                   /*
                   Container(
