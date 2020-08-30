@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:slservers/main.dart';
 import 'package:slservers/widgets/sync_switch_widget.dart';
 
 class Tags {
@@ -14,7 +13,7 @@ class Tags {
   static const TagWidget ANIME = TagWidget("ANIME", Colors.purpleAccent, tooltip: "This server encourages the anime sub-culture",);
   static const TagWidget ANARCHY = TagWidget("ANARCHY", Colors.black, tooltip: "This server doesn't enforce or have rules",);
   static const TagWidget TEENS = TagWidget("TEENS+", Colors.redAccent, tooltip: "This server has minimum age and is targeting teens and adults",);
-  static const TagWidget BEGINNERS = TagWidget("BEGINNERS", Colors.brown, tooltip: "This server is beginner friendly",);
+  static const TagWidget BEGINNERS = TagWidget("BEGINNERS", Colors.teal, tooltip: "This server is beginner friendly",);
   static const TagWidget MODERATED = TagWidget("MODERATED", Colors.indigo, size: 13, tooltip: "This server is actively moderated and rules are enforced",);
   static const TagWidget VOTEREWARD = TagWidget("VOTE REWARD", Colors.deepPurple, size: 12, tooltip: "This server offers vote rewards",);
 
