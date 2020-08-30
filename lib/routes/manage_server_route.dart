@@ -34,7 +34,7 @@ class _ManageServerRouteState extends State<ManageServerRoute> {
         ignoreLogin: false,
         child: (context) => ScrollWrapper(
           wrapScreenSize: true,
-          child:  MyServersBody(),
+          child: MyServersBody(),
         ),
       ),
     );
