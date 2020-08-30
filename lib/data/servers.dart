@@ -20,8 +20,8 @@ class Servers {
   static Future<PaginatedServerResponse> find({int page = 0, bool localized = true}) async {
     var response;
     if (localized) {
-      IpApiResponse ip = await IpApi.get();
-      response = await http.get("$API_LOCATION/server?page=$page&limit=10&languages=${ip.countryCode}");
+      ApiResponse ip = await IpApi.get();
+      response = await http.get("$API_LOCATION/server?page=$page&limit=10&languages=${ip.country}");
     } else {
       response = await http.get("$API_LOCATION/server?page=$page&limit=10");
     }
