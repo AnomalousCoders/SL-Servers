@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:slservers/widgets/snackbars.dart';
@@ -13,6 +11,7 @@ class RawKeyboardWidget extends StatefulWidget {
 }
 
 class _RawKeyboardWidgetState extends State<RawKeyboardWidget> {
+
   final FocusNode _focusNode = FocusNode();
   RawKeyEvent _event;
 
@@ -61,6 +60,7 @@ class _RawKeyboardWidgetState extends State<RawKeyboardWidget> {
     if (focus != null) {
       var widget = focus.context.widget;
       if (widget is EditableText) {
+        EditableText editableText = widget;
         var controller = widget.controller;
         var shiftPressed =
             _event.isShiftPressed || unknownKey.contains('shift');
@@ -89,34 +89,6 @@ class _RawKeyboardWidgetState extends State<RawKeyboardWidget> {
           info(context, "Copied selected text to clipboard");
         }
 
-        //paste
-        if (ctrlPressed && isV) {
-          Clipboard.getData("text/plain").then((data) {
-            if (controller.selection.end > controller.selection.start) {
-              var selectedText =
-              controller.selection.textInside(controller.text);
-              controller.text = controller.text.replaceFirst(
-                  selectedText, data.text, controller.selection.start);
-            } else if (controller.selection.start == 0 &&
-                controller.selection.end == 0) {
-              controller.text = '${data.text}${controller.text}';
-              controller.selection = TextSelection(
-                  baseOffset: controller.text.length,
-                  extentOffset: controller.text.length);
-            } else if (controller.selection.start == controller.selection.end) {
-              var firstWord =
-              controller.text.substring(0, controller.selection.end);
-              var secondWord = controller.text
-                  .substring(controller.selection.end, controller.text.length);
-              var firstPaste = '$firstWord${data.text}';
-              controller.text = '$firstPaste$secondWord';
-              controller.selection = TextSelection(
-                  baseOffset: firstPaste.length,
-                  extentOffset: firstPaste.length);
-            }
-          });
-        }
-
         ///cut
         if (ctrlPressed &&
             isX &&
@@ -125,24 +97,7 @@ class _RawKeyboardWidgetState extends State<RawKeyboardWidget> {
           controller.text = controller.text
               .replaceFirst(selectedText, '', controller.selection.start);
           Clipboard.setData(ClipboardData(text: selectedText));
-        }
-
-        //shift
-        if (shiftPressed) {
-          var start = controller.selection.start;
-          var end = controller.selection.end;
-          var maxLen = controller.text.length;
-          if (isLeft) {
-            --start;
-            start = max(0, start);
-            controller.selection =
-                TextSelection(baseOffset: start, extentOffset: end);
-          } else if (isRight) {
-            ++end;
-            end = min(end, maxLen);
-            controller.selection =
-                TextSelection(baseOffset: start, extentOffset: end);
-          }
+          info(context, "Copied selected text to clipboard");
         }
       }
     }
