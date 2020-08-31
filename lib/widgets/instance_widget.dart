@@ -49,7 +49,7 @@ class _InstanceWidgetState extends State<InstanceWidget> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("Server IP", style: GoogleFonts.raleway(color: Colors.white70, fontWeight: FontWeight.bold),),
+                      SelectableText("Server IP", style: GoogleFonts.raleway(color: Colors.white70, fontWeight: FontWeight.bold),),
                       Row(
                         children: <Widget>[
                           Text(instance.address??"invalid", style: GoogleFonts.roboto(fontSize: 20)),
@@ -69,16 +69,16 @@ class _InstanceWidgetState extends State<InstanceWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Text("Players", style: GoogleFonts.raleway(color: Colors.white70, fontWeight: FontWeight.bold),),
-                        Text("${instance.players??0}/${instance.maxplayers??0}", style: GoogleFonts.roboto(fontSize: 20, color: instance.maxplayers - instance.players == 0 ? Colors.redAccent : Colors.white)),
+                        SelectableText("Players", style: GoogleFonts.raleway(color: Colors.white70, fontWeight: FontWeight.bold),),
+                        SelectableText("${instance.players??0}/${instance.maxplayers??0}", style: GoogleFonts.roboto(fontSize: 20, color: instance.maxplayers - instance.players == 0 ? Colors.redAccent : Colors.white)),
                       ],
                     ),
                   ),
                 ],
               ),
               Container(height: 16,),
-              Text("Description", style: GoogleFonts.raleway(color: Colors.white70, fontWeight: FontWeight.bold),),
-              Text(instance.description, style: GoogleFonts.roboto(fontSize: 20),),
+              SelectableText("Description", style: GoogleFonts.raleway(color: Colors.white70, fontWeight: FontWeight.bold),),
+              SelectableText(instance.description, style: GoogleFonts.roboto(fontSize: 20),),
               Container(height: 16,),
               Divider(),
               Column(
@@ -91,9 +91,9 @@ class _InstanceWidgetState extends State<InstanceWidget> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text("Version", style: GoogleFonts.raleway(color: Colors.white38, fontWeight: FontWeight.bold),textAlign: TextAlign.start,),
+                            SelectableText("Version", style: GoogleFonts.raleway(color: Colors.white38, fontWeight: FontWeight.bold),textAlign: TextAlign.start,),
                             Container(height: 4,),
-                            Text(instance.version??"none", style: GoogleFonts.roboto(fontSize: 15, color: Colors.white70),),
+                            SelectableText(instance.version??"none", style: GoogleFonts.roboto(fontSize: 15, color: Colors.white70),),
                           ],
                         ),
                       ),
@@ -102,7 +102,7 @@ class _InstanceWidgetState extends State<InstanceWidget> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Text("NW Verified", style: GoogleFonts.raleway(color: Colors.white38, fontWeight: FontWeight.bold),textAlign: TextAlign.start),
+                            SelectableText("NW Verified", style: GoogleFonts.raleway(color: Colors.white38, fontWeight: FontWeight.bold),textAlign: TextAlign.start),
                             Icon(instance.verified??false ? Icons.check : Icons.clear, color: Colors.white70,)
                           ],
                         ),
@@ -112,7 +112,7 @@ class _InstanceWidgetState extends State<InstanceWidget> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Text("FriendlyFire", style: GoogleFonts.raleway(color: Colors.white38, fontWeight: FontWeight.bold),textAlign: TextAlign.start),
+                            SelectableText("FriendlyFire", style: GoogleFonts.raleway(color: Colors.white38, fontWeight: FontWeight.bold),textAlign: TextAlign.start),
                             Icon(instance.ff??false ? Icons.check : Icons.clear, color: Colors.white70)
                           ],
                         ),
@@ -128,8 +128,8 @@ class _InstanceWidgetState extends State<InstanceWidget> {
                          mainAxisAlignment: MainAxisAlignment.start,
                          crossAxisAlignment: CrossAxisAlignment.start,
                          children: <Widget>[
-                           Text("Plugins", style: GoogleFonts.raleway(color: Colors.white38, fontWeight: FontWeight.bold),textAlign: TextAlign.start),
-                           Text((instance.plugins??[]).join(" "), style: GoogleFonts.roboto(fontSize: 15, color: Colors.white70),),
+                           SelectableText("Plugins", style: GoogleFonts.raleway(color: Colors.white38, fontWeight: FontWeight.bold),textAlign: TextAlign.start),
+                           SelectableText((instance.plugins??[]).join(" "), style: GoogleFonts.roboto(fontSize: 15, color: Colors.white70),),
                          ],
                        ),
                      ],

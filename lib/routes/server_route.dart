@@ -143,11 +143,11 @@ class _ServerRouteState extends State<ServerRoute> {
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(16.0),
-                                                  child: Text(server.name, style: GoogleFonts.raleway(fontSize: 28, fontWeight: FontWeight.w800, color: Colors.white), textAlign: TextAlign.center,),
+                                                  child: SelectableText(server.name, style: GoogleFonts.raleway(fontSize: 28, fontWeight: FontWeight.w800, color: Colors.white), textAlign: TextAlign.center,),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-                                                  child: Text(server.preview, style: GoogleFonts.robotoCondensed(fontSize: 18,color: Colors.white, fontWeight: FontWeight.w400), textAlign: TextAlign.center),
+                                                  child: SelectableText(server.preview, style: GoogleFonts.robotoCondensed(fontSize: 18,color: Colors.white, fontWeight: FontWeight.w400), textAlign: TextAlign.center),
                                                 ),
                                               ],
                                             ),
@@ -217,7 +217,10 @@ class _ServerRouteState extends State<ServerRoute> {
                                               width: width / 6 * 2,
                                               child: Column(children: server.rules.map((e) => Row(children: <Widget>[
                                                 Text("${i++}. ", style: GoogleFonts.roboto(fontSize: 30, color: Colors.white70),),
-                                                Text(e, style: GoogleFonts.raleway(fontSize: 20))
+                                                Container(
+                                                    child: Text(e, style: GoogleFonts.raleway(fontSize: 20)),
+                                                  width: width / 6  * 2 ,
+                                                )
                                               ], crossAxisAlignment: CrossAxisAlignment.center,)).toList(), crossAxisAlignment: CrossAxisAlignment.center),
                                             ),
                                           ),
@@ -225,7 +228,8 @@ class _ServerRouteState extends State<ServerRoute> {
                                         ],
                                       );
                                     }
-                                  ], width: width / 6 * 4, height:  height / 16 * 13,),
+                                  ], width: width / 6 * 4, height:  height / 16 * 13,
+                                  ),
                                 ],
                               ),
                             ),

@@ -14,8 +14,8 @@ class VotesField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text("Votes", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-        Text("${server.votecount}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.lightGreenAccent),),
+        SelectableText("Votes", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
+        SelectableText("${server.votecount}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.lightGreenAccent),),
       ],
     );
   }
@@ -34,8 +34,8 @@ class PlayersField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text("Players", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-        Text("${server.players}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.lightBlueAccent),),
+        SelectableText("Players", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
+        SelectableText("${server.players}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.lightBlueAccent),),
       ],
     );
   }
@@ -54,8 +54,8 @@ class ScoreField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text("Score", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-        Text("${server.score}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.redAccent),),
+        SelectableText("Score", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
+        SelectableText("${server.score}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.redAccent),),
       ],
     );
   }
@@ -74,8 +74,8 @@ class CapacityField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text("Capacity", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-        Text("${server.maxplayers}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.yellow),),
+        SelectableText("Capacity", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
+        SelectableText("${server.maxplayers}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.yellow),),
       ],
     );
   }

@@ -84,9 +84,9 @@ class TagWidget extends StatelessWidget {
         boolean: tooltip != null,
         positive: Tooltip(
           message: tooltip??"",
-            child: Text(text, style: GoogleFonts.raleway(color: Colors.white, fontSize: size, fontWeight: FontWeight.w800),)
+            child: SelectableText(text, style: GoogleFonts.raleway(color: Colors.white, fontSize: size, fontWeight: FontWeight.w800),)
         ),
-        negative: Text(text, style: GoogleFonts.raleway(color: Colors.white, fontSize: size, fontWeight: FontWeight.w800),),
+        negative: SelectableText(text, style: GoogleFonts.raleway(color: Colors.white, fontSize: size, fontWeight: FontWeight.w800),),
       ),
     );
   }

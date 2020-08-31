@@ -101,32 +101,40 @@ class _MyServersBodyState extends State<MyServersBody> {
               height: 500,
               child: Column(
                 children: [
-                  Container(
-                    width: 200,
-                    height: 200,
-                    color: ColorConstants.background[600],
-                    child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Flexible(
-                            child: Container(
-                                padding: const EdgeInsets.all(8.0),
-                                color: ColorConstants.background[600],
-                                child: Image.network(url)
-                            ), flex: 1, fit: FlexFit.tight,
-                          ),
-                          Expanded(
-                            child: Container(
-                                padding: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                  color: y.data
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        SLServers.router.navigateTo(context, "/server/${server.id}");
+                      },
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        color: ColorConstants.background[600],
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Flexible(
+                                child: Container(
+                                    padding: const EdgeInsets.all(8.0),
+                                    color: ColorConstants.background[600],
+                                    child: Image.network(url)
+                                ), flex: 1, fit: FlexFit.tight,
+                              ),
+                              Expanded(
+                                child: Container(
+                                    padding: const EdgeInsets.all(8.0),
+                                    decoration: BoxDecoration(
+                                      color: y.data
+                                    ),
+                                    alignment: Alignment.center,child: Text(server.name, style: GoogleFonts.roboto(fontSize: 25,),)
                                 ),
-                                alignment: Alignment.center,child: Text(server.name, style: GoogleFonts.roboto(fontSize: 25,),)
-                            ),
+                              ),
+                              Container(height: 10,)
+                            ],
                           ),
-                          Container(height: 10,)
-                        ],
+                        ),
                       ),
                     ),
                   ),

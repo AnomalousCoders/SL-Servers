@@ -86,10 +86,10 @@ class _ServerWidgetState extends State<ServerWidget>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(height: 8,),
-                        Text(server.name, style: GoogleFonts.raleway(fontSize: 30, fontWeight: FontWeight.w800, color: Colors.white)),
+                        SelectableText(server.name, style: GoogleFonts.raleway(fontSize: 30, fontWeight: FontWeight.w800, color: Colors.white)),
                         Container(
                           width: 600,
-                            child: Text(server.preview, style: GoogleFonts.ubuntu(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white70), softWrap: true,)
+                            child: SelectableText(server.preview, style: GoogleFonts.ubuntu(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white70))
                         ),
                       ],
                     ),
