@@ -354,7 +354,7 @@ class _ServerRouteState extends State<ServerRoute> {
 
   Widget _discordButton() {
     return SyncSwitchWidget(
-      boolean: server.discord != null && server.description != "",
+      boolean: server.discord != null,
       negative: Container(),
       positive: Padding(
         padding: const EdgeInsets.all(8.0),

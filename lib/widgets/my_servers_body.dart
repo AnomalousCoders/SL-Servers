@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -10,6 +11,8 @@ import 'package:slservers/main.dart';
 import 'package:slservers/models/server.dart';
 import 'package:slservers/routes/manage_server_route.dart';
 import 'package:slservers/widgets/register_instance_dialog.dart';
+
+import 'login_status.dart';
 
 class MyServersBody extends StatefulWidget {
   MyServersBody({Key key}) : super(key: key);
@@ -31,15 +34,53 @@ class _MyServersBodyState extends State<MyServersBody> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Text("Networks", style: GoogleFonts.raleway(fontSize: 25),),
         Container(
-          height: 520,
-          child: Wrap(
-            children: (servers??[]).map((e) => serverWidget(e)).toList(),
+          width: double.infinity,
+          height: 50,
+          color: ColorConstants.primary,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
+                  Navigator.of(context).pushReplacementNamed("/");
+                }),
+                LoginStatus()
+              ],
+            ),
           ),
         ),
+        Expanded(child: Container(),),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text("Networks", style: GoogleFonts.raleway(fontSize: 25),),
+        ),
+        Center(
+          child: Container(
+            height: 520,
+            child: Wrap(
+              children: servers != null && servers.isNotEmpty ? servers.map((e) => serverWidget(e)).toList() : [
+                Container(
+                  width: 200,
+                  height: 500,
+                  color: ColorConstants.background[600],
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(EvaIcons.alertTriangleOutline, color: Colors.redAccent, size: 75,),
+                      Container(height: 16,),
+                      Text("You don't own any servers at the moment", style: GoogleFonts.raleway(fontSize: 20), textAlign: TextAlign.center,)
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(child: Container(),),
       ],
     );
   }
