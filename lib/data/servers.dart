@@ -5,10 +5,12 @@ import 'package:crypto/crypto.dart' as crypto;
 import 'package:expire_cache/expire_cache.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:slservers/data/ipapi.dart';
 import 'package:slservers/models/game_instance.dart';
 import 'package:slservers/models/ip_api_response.dart';
+import 'package:slservers/models/pending_verification.dart';
 import 'package:slservers/models/server.dart';
 import 'package:slservers/models/server_instance.dart';
 import 'package:slservers/models/server_response.dart';
@@ -20,6 +22,9 @@ class Servers {
 
   //"https://virtserver.swaggerhub.com/Helight/SLServers/1.0.0"
   static const String API_LOCATION = "https://api.slservers.eu";
+  static const String DEBUG_LOCATION = "http://localhost";
+
+  static String get location => kReleaseMode ? API_LOCATION : DEBUG_LOCATION;
 
   static Future<PaginatedServerResponse> find({int page = 0, bool localized = true}) async {
     var response;
@@ -30,9 +35,9 @@ class Servers {
 
     if (localized) {
       ApiResponse ip = await IpApi.get();
-      response = await http.get("$API_LOCATION/server?page=$page&limit=10&languages=${ip.country}");
+      response = await http.get("$location/server?page=$page&limit=10&languages=${ip.country}");
     } else {
-      response = await http.get("$API_LOCATION/server?page=$page&limit=10");
+      response = await http.get("$location/server?page=$page&limit=10");
     }
 
     var pr = PaginatedServerResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
@@ -46,7 +51,7 @@ class Servers {
 
     var user = FirebaseAuth.instance.currentUser;
     var token = (await user.getIdToken());
-    var response = await http.post("$API_LOCATION/server", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"}, body: jsonEncode(server.toJson()));
+    var response = await http.post("$location/server", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"}, body: jsonEncode(server.toJson()));
     return true;
   }
 
@@ -55,23 +60,47 @@ class Servers {
 
     var user = FirebaseAuth.instance.currentUser;
     var token = (await user.getIdToken());
-    var response = await http.put("$API_LOCATION/server", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"}, body: jsonEncode(server.toJson()));
+    var response = await http.put("$location/server", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"}, body: jsonEncode(server.toJson()));
     return true;
   }
+
+  static Future<List<PendingVerification>> getAllPending(Server server) async {
+    var user = FirebaseAuth.instance.currentUser;
+    var token = (await user.getIdToken());
+    var response = await http.get("$location/server/${server.id}/pending", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"});
+    List objects = jsonDecode(response.body);
+    return objects.map((e) => PendingVerification.fromJson(e)).toList();
+  }
+
+  static Future<bool> updateInstance(Server server, ServerInstance instance) async {
+    var user = FirebaseAuth.instance.currentUser;
+    var token = (await user.getIdToken());
+    var response = await http.put("$location/server/${server.id}/instance/${instance.id}", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"}, body: jsonEncode(instance.toJson()));
+    return true;
+  }
+
+
+  static Future<bool> deleteInstance(Server server, ServerInstance instance) async {
+    var user = FirebaseAuth.instance.currentUser;
+    var token = (await user.getIdToken());
+    var response = await http.delete("$location/server/${server.id}/instance/${instance.id}", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"});
+    return true;
+  }
+
 
   static Future<bool> delete(Server server) async {
     serverCache.invalidate(server.id);
 
     var user = FirebaseAuth.instance.currentUser;
     var token = (await user.getIdToken());
-    var response = await http.delete("$API_LOCATION/server?server=${server.id}", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"});
+    var response = await http.delete("$location/server?server=${server.id}", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"});
     return true;
   }
 
   static Future<String> registerServer(Server server, String address) async {
     var user = FirebaseAuth.instance.currentUser;
     var token = (await user.getIdToken());
-    var response = await http.post("$API_LOCATION/server/${server.id}/registerInstance", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"}, body: address);
+    var response = await http.post("$location/server/${server.id}/registerInstance", headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"}, body: address);
     Map<String,dynamic> json = jsonDecode(response.body);
     return json["verToken"];
   }
@@ -82,7 +111,7 @@ class Servers {
       return await serverCache.get(id);
     }
 
-    String url = "$API_LOCATION/server/$id";
+    String url = "$location/server/$id";
     var response = await http.get(url);
     var server = Server.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     serverCache.set(server.id,server);
@@ -90,13 +119,20 @@ class Servers {
   }
 
   static Future<List<ServerInstance>> _instances(String id) async {
-    var response = await http.get("$API_LOCATION/server/$id/instance");
+    var response = await http.get("$location/server/$id/instance");
     List<dynamic> list = jsonDecode(utf8.decode(response.bodyBytes));
     return list.map((e) => ServerInstance.fromJson(e)).toList();
   }
 
-  static Future<Server> preloadId(String id, BuildContext context) async {
+  static Future<Server> preloadId(String id, BuildContext context, {bool adminLoad = false}) async {
     Server server = await get(id);
+
+    if (adminLoad) {
+      List<PendingVerification> verifications = await getAllPending(server);
+      server.pendingRefs = verifications;
+    }
+
+
     if (server.autogenerated) {
       ServerInstance instance = new ServerInstance(id: server.id, address: "${server.vaddress}:${server.vport}", verified: true, name: server.name, description: "");
       server.instanceRefs = [instance];
@@ -127,14 +163,17 @@ class Servers {
       }
     }
 
+    /*
     if (server.banner != null && server.banner != "") await precacheImage(NetworkImage(server.banner), context);
     if (server.icon != null && server.icon != "") await precacheImage(NetworkImage(server.icon), context);
+    */
+
     return server;
   }
 
   static Future<List<Server>> myServers() async {
     String token = (await (FirebaseAuth.instance.currentUser).getIdToken());
-    var response = await http.get("$API_LOCATION/myServers",  headers: {"Authorization": "Bearer $token"});
+    var response = await http.get("$location/myServers",  headers: {"Authorization": "Bearer $token"});
     print(response.body);
     List<dynamic> servers = jsonDecode(response.body);
     List<Server> list = servers.map((e) => Server.fromJson(e)).toList();
@@ -143,14 +182,18 @@ class Servers {
   }
   
   static Future<GameInstance> gameInstance(String hashedAddress) async {
-    var response = await http.get("$API_LOCATION/game/$hashedAddress");
-    Map<String,dynamic> decoded = jsonDecode(response.body);
-    GameInstance instance = GameInstance.fromJson(decoded);
-    return instance;
+    try {
+      var response = await http.get("$location/game/$hashedAddress");
+      Map<String,dynamic> decoded = jsonDecode(response.body);
+      GameInstance instance = GameInstance.fromJson(decoded);
+      return instance;
+    } catch (_) {
+      return null;
+    }
   } 
 
   static Future<bool> vote(String id) async {
-    var response = await http.post("$API_LOCATION/server/$id/vote");
+    var response = await http.post("$location/server/$id/vote");
     return response.statusCode == 204;
   }
 

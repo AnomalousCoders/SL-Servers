@@ -36,6 +36,10 @@ class ServerInstance {
   List<String> get plugins => _plugins;
 
 
+  set id(String value) {
+    _id = value;
+  }
+
   set version(String value) {
     _version = value;
   }
@@ -105,5 +109,29 @@ class ServerInstance {
 
   set ff(bool value) {
     _ff = value;
+  }
+
+  set address(String value) {
+    _address = value;
+  }
+
+  set name(String value) {
+    _name = value;
+  }
+
+  set description(String value) {
+    _description = value;
+  }
+
+  set verified(bool value) {
+    _verified = value;
+  }
+
+  set tags(List<String> value) {
+    _tags = value;
+  }
+
+  set plugins(List<String> value) {
+    _plugins = value;
   }
 }

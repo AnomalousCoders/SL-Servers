@@ -1,3 +1,4 @@
+import 'package:slservers/models/pending_verification.dart';
 import 'package:slservers/models/server_instance.dart';
 
 /// id : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
@@ -87,6 +88,7 @@ class Server {
   }
 
   List<ServerInstance> instanceRefs = [];
+  List<PendingVerification> pendingRefs = [];
 
   Server({
       String id, 

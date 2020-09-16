@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slservers/data/servers.dart';
 import 'package:slservers/models/server.dart';
+import 'package:stylight/stylight.dart';
 
 import '../main.dart';
 
@@ -62,11 +63,11 @@ class _RegisterInstanceDialogState extends State<RegisterInstanceDialog> {
   List<Widget> _responseWidgets() {
     return [
       Expanded(child: Container(),),
-      Text("Action required", style: GoogleFonts.raleway(fontSize: 25, color: ColorConstants.primary),),
+      Text("Action required", style: GoogleFonts.raleway(fontSize: 25, color: textColor1),),
       Container(height: 8,),
       Text("A claim request of '$buffer' has been created. Add the token bellow to your server information (not the PasteBin description) in order verify your ownership of the server. "
           "The verification should not take longer than 2 minutes. If your verification has not completed after given time and you're sure your input is correct, please contact us through our discord server",
-        style: GoogleFonts.ubuntu(fontSize: 15, color: Colors.white70), textAlign: TextAlign.center,
+        style: GoogleFonts.ubuntu(fontSize: 15, color: textColor2), textAlign: TextAlign.center,
       ),
       TextField(readOnly: true, maxLines: 1, controller: TextEditingController(text: responseToken), style: TextStyle(fontSize: 10), decoration: InputDecoration(suffix:  IconButton(icon: Icon(Icons.content_copy), onPressed: () {
         Clipboard.setData(ClipboardData(text: responseToken));

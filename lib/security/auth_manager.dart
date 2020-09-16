@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:slservers/widgets/rerouting_widget.dart';
+import 'package:stylight/stylight.dart';
 
 class AuthManager extends StatefulWidget {
 
@@ -38,8 +39,11 @@ class AuthManager extends StatefulWidget {
 class _AuthManagerState extends State<AuthManager> {
   @override
   Widget build(BuildContext context) {
+    widget.al??= ModalRoute.of(context).settings.name;
     return Container(
-      child: ReroutingWidget(child: widget.child, route: "/login", future: shouldReroute(), awaiting: (_) => Scaffold(),),
+      child: ReroutingWidget(child: widget.child, route: "/login", future: shouldReroute(), awaiting: (_) => Scaffold(
+        body: LoadingIndicator(),
+      )),
     );
   }
 

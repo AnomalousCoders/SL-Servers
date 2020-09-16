@@ -10,7 +10,7 @@ import 'package:slservers/data/servers.dart';
 import 'package:slservers/main.dart';
 import 'package:slservers/models/server.dart';
 import 'package:slservers/routes/manage_server_route.dart';
-import 'package:slservers/widgets/register_instance_dialog.dart';
+import 'package:stylight/stylight.dart';
 
 import 'login_status.dart';
 
@@ -36,20 +36,23 @@ class _MyServersBodyState extends State<MyServersBody> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(
-          width: double.infinity,
-          height: 50,
-          color: ColorConstants.primary,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
-                  Navigator.of(context).pushReplacementNamed("/");
-                }),
-                LoginStatus()
-              ],
+        Hero(
+          tag: SLServers.AppBarHero,
+          child: Container(
+            width: double.infinity,
+            height: 50,
+            color: primary[700],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
+                    Navigator.of(context).pushReplacementNamed("/");
+                  }),
+                  LoginStatus()
+                ],
+              ),
             ),
           ),
         ),
@@ -148,10 +151,13 @@ class _MyServersBodyState extends State<MyServersBody> {
                           RaisedButton(color: y.data, child: Text("Edit 🔧"), onPressed: () {
                             SLServers.router.navigateTo(context, "/edit/${server.id}");
                           }),
-                          RaisedButton(color: y.data, child: Text("Add Instance 🔗"), onPressed: () {
+                          RaisedButton(color: y.data, child: Text("Instances 🔗"), onPressed: () {
+                            SLServers.router.navigateTo(context, "/instances/${server.id}");
+                            /*
                             showDialog(context: context, builder: (ctx) {
                               return RegisterInstanceDialog(server: server,);
                             });
+                             */
                           }),
                           RaisedButton(color: y.data, child: Text("Statistics 📊"), onPressed: () {
                             ManageServerRoute.showSnack(context, Colors.orangeAccent, "🚧 This feature is not yet implemented 🚧");

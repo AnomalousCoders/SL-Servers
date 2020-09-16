@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slservers/models/server.dart';
+import 'package:stylight/stylight.dart';
 
 class VotesField extends StatelessWidget {
 
@@ -14,8 +15,8 @@ class VotesField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        SelectableText("Votes", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-        SelectableText("${server.votecount}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.lightGreenAccent),),
+        SelectableText("Votes", style: TextStyles.Header.style,),
+        SelectableText("${server.votecount}", style: GoogleFonts.openSans(textStyle: TextStyles.Title2.style.copyWith(color: Hues.Green.hard, fontWeight: FontWeight.w900, fontSize: 30),)),
       ],
     );
   }
@@ -34,8 +35,8 @@ class PlayersField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        SelectableText("Players", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-        SelectableText("${server.players}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.lightBlueAccent),),
+        SelectableText("Players",  style: TextStyles.Header.style,),
+        SelectableText("${server.players}", style: GoogleFonts.openSans(textStyle: TextStyles.Title2.style.copyWith(color: Hues.Blue.hard, fontWeight: FontWeight.w900, fontSize: 30))),
       ],
     );
   }
@@ -54,8 +55,8 @@ class ScoreField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        SelectableText("Score", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-        SelectableText("${server.score}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.redAccent),),
+        SelectableText("Score", style: TextStyles.Header.style,),
+        SelectableText("${server.score}", style: GoogleFonts.openSans(textStyle: TextStyles.Title1.style.copyWith(color: Hues.Red.hard, fontWeight: FontWeight.w900, fontSize: 30))),
       ],
     );
   }
@@ -74,8 +75,8 @@ class CapacityField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        SelectableText("Capacity", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
-        SelectableText("${server.maxplayers}", style: GoogleFonts.openSans(fontWeight: FontWeight.w800, fontSize: 30, color: Colors.yellow),),
+        SelectableText("Capacity",  style: TextStyles.Header.style,),
+        SelectableText("${server.maxplayers}", style: GoogleFonts.openSans(textStyle: TextStyles.Title2.style.copyWith(color: Hues.Yellow.hard, fontWeight: FontWeight.w900, fontSize: 30))),
       ],
     );
   }

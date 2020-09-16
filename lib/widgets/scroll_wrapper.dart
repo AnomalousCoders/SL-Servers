@@ -7,8 +7,9 @@ class ScrollWrapper extends StatelessWidget {
 
   final Widget child;
   bool wrapScreenSize;
+  bool removeFooter;
 
-  ScrollWrapper({this.child, this.wrapScreenSize = false});
+  ScrollWrapper({this.child, this.wrapScreenSize = false, this.removeFooter = false});
 
   ScrollController scrollController = new ScrollController();
 
@@ -19,7 +20,7 @@ class ScrollWrapper extends StatelessWidget {
     return RawKeyboardWidget(
       child: Scrollbar(
         controller: scrollController,
-        isAlwaysShown: true,
+        isAlwaysShown: !removeFooter,
         child: SingleChildScrollView(
           controller: scrollController,
           child: Column(
@@ -33,8 +34,7 @@ class ScrollWrapper extends StatelessWidget {
                 negative: child,
                 boolean: wrapScreenSize,
               ),
-              Divider(thickness: 2,),
-              Footer()
+              removeFooter ? Container() : Footer()
             ],
           ),
           scrollDirection: Axis.vertical,

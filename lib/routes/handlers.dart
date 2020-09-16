@@ -5,6 +5,7 @@ import 'package:slservers/data/servers.dart';
 import 'package:slservers/models/server.dart';
 import 'package:slservers/routes/create_route.dart';
 import 'package:slservers/routes/home_route.dart';
+import 'package:slservers/routes/instance_route.dart';
 import 'package:slservers/routes/server_route.dart';
 
 class ServerHandler extends Handler {
@@ -56,6 +57,21 @@ class EditHandler extends Handler {
           return CreateRoute(initial: server,);
         }
         return Container();
+      },
+      future: Servers.myServers(),
+    );
+  });
+
+}
+
+
+class InstancesHandler extends Handler {
+
+  InstancesHandler() : super(handlerFunc: (BuildContext context, Map<String,dynamic> params) {
+    String server = params["server"][0];
+    return FutureBuilder(
+      builder: (ctx,dat) {
+        return InstanceRoute(id: server,);
       },
       future: Servers.myServers(),
     );

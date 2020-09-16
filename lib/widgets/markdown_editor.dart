@@ -53,6 +53,7 @@ class _MarkdownEditorState extends State<MarkdownEditor> {
         ),
         Container(
           color: Colors.black12,
+          width: parent.width,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

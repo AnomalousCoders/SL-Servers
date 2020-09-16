@@ -66,15 +66,15 @@ class _CreateRouteState extends State<CreateRoute> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: TextField(controller: TextEditingController(text: server.rules.join(",")), onChanged: (s) => server.rules = s.split(",").map((e) => e.trim()).toList(), decoration: InputDecoration(labelText: "Rules", border: OutlineInputBorder(), filled: true, fillColor: Colors.black12, helperText: "Entries are comma separated"),),
+                        child: TextField(controller: TextEditingController(text: server.rules.join(";")), onChanged: (s) => server.rules = s.split(";").map((e) => e.trim()).toList(), decoration: InputDecoration(labelText: "Rules", border: OutlineInputBorder(), filled: true, fillColor: Colors.black12, helperText: "Entries are ; separated"),),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: TextField(controller: TextEditingController(text: server.tags.join(",")), onChanged: (s) => server.tags = s.split(",").map((e) => e.trim()).toList(), decoration: InputDecoration(labelText: "Tags", border: OutlineInputBorder(), filled: true, fillColor: Colors.black12, helperText: "Entries are comma separated")),
+                        child: TextField(controller: TextEditingController(text: server.tags.join(";")), onChanged: (s) => server.tags = s.split(";").map((e) => e.trim()).toList(), decoration: InputDecoration(labelText: "Tags", border: OutlineInputBorder(), filled: true, fillColor: Colors.black12, helperText: "Entries are ; separated")),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: TextField(controller: TextEditingController(text: server.languages.join(",")), onChanged: (s) => server.languages = s.split(",").map((e) => e.trim()).toList(), decoration: InputDecoration(labelText: "Languages", border: OutlineInputBorder(), filled: true, fillColor: Colors.black12, helperText: "Entries are comma separated")),
+                        child: TextField(controller: TextEditingController(text: server.languages.join(";")), onChanged: (s) => server.languages = s.split(";").map((e) => e.trim()).toList(), decoration: InputDecoration(labelText: "Languages", border: OutlineInputBorder(), filled: true, fillColor: Colors.black12, helperText: "Entries are ; separated")),
                       )
                     ],
                   ),

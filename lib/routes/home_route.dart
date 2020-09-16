@@ -9,6 +9,7 @@ import 'package:slservers/widgets/better_checkbox.dart';
 import 'package:slservers/widgets/login_status.dart';
 import 'package:slservers/widgets/scroll_wrapper.dart';
 import 'package:slservers/widgets/server_widget.dart';
+import 'package:stylight/stylight.dart';
 
 class HomeRoute extends StatefulWidget {
   HomeRoute({Key key, this.intialPage = 0, this.localized = true}) : super(key: key);
@@ -50,6 +51,7 @@ class _HomeRouteState extends State<HomeRoute> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: primary[500],
       //appBar: SLSAppBar(),
       body: AuthManager(
         ignoreLogin: true,
@@ -59,17 +61,20 @@ class _HomeRouteState extends State<HomeRoute> {
             child: Column(
               children: <Widget>[
 
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: ColorConstants.primary,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        LoginStatus()
-                      ],
+                Hero(
+                  tag: SLServers.AppBarHero,
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    color: primary[700],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          LoginStatus()
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -20,6 +20,7 @@ import 'package:slservers/widgets/shield_button.dart';
 import 'package:slservers/widgets/sync_switch_widget.dart';
 import 'package:slservers/widgets/tabbed_view.dart';
 import 'package:slservers/widgets/tags.dart';
+import 'package:stylight/stylight.dart';
 
 class ServerRoute extends StatefulWidget {
   ServerRoute({Key key, this.server}) : super(key: key);
@@ -55,6 +56,7 @@ class _ServerRouteState extends State<ServerRoute> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: primary[500],
       key: _scaffoldKey,
       body: AuthManager(
         ignoreLogin: true,
@@ -69,7 +71,7 @@ class _ServerRouteState extends State<ServerRoute> {
                   Container(
                     width: double.infinity,
                     height: 50,
-                    color: ColorConstants.primary,
+                    color: primary[700],
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
@@ -131,7 +133,7 @@ class _ServerRouteState extends State<ServerRoute> {
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Container(height: 16,),
-                                                Text("Network", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
+                                                Text("Network", style: TextStyles.Header.style.copyWith(color: textColor2),),
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 64.0, right: 64.0, top: 32.0, bottom: 32),
                                                   child: Container(
@@ -143,11 +145,11 @@ class _ServerRouteState extends State<ServerRoute> {
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(16.0),
-                                                  child: SelectableText(server.name, style: GoogleFonts.raleway(fontSize: 28, fontWeight: FontWeight.w800, color: Colors.white), textAlign: TextAlign.center,),
+                                                  child: SelectableText(server.name, style: TextStyles.Title1.style.copyWith(fontWeight: FontWeight.w900),),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-                                                  child: SelectableText(server.preview, style: GoogleFonts.robotoCondensed(fontSize: 18,color: Colors.white, fontWeight: FontWeight.w400), textAlign: TextAlign.center),
+                                                  child: SelectableText(server.preview, style: TextStyles.Body.style.copyWith(color: textColor1))
                                                 ),
                                               ],
                                             ),
@@ -172,14 +174,14 @@ class _ServerRouteState extends State<ServerRoute> {
                                               ),
                                               Container(
                                                 width: 120,
-                                                child: RaisedButton(child: Text("Vote", style: GoogleFonts.raleway(fontSize: 20, fontWeight: FontWeight.w600),), onPressed: () async {
+                                                child: RaisedButton(child: Text("Vote", style: TextStyles.Title3.style.copyWith(color: textColor1)), onPressed: () async {
                                                   bool success = await Servers.vote(server.id);
                                                   if (success) {
                                                     sendToast(context, "Your vote has been registered!", Colors.green);
                                                   } else {
                                                     sendToast(context, "You already voted for this server", Colors.redAccent);
                                                   }
-                                                }, splashColor: Colors.green, color: Colors.lightGreen),
+                                                }, splashColor: Colors.green, color: Hues.Green.hard),
                                               ),
                                               Container(height: 32,),
                                             ],
@@ -251,7 +253,7 @@ class _ServerRouteState extends State<ServerRoute> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(16.0),
-                                    child: Text("Servers", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
+                                    child: TextStyles.Header.text("Servers")
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(16.0),
@@ -279,7 +281,7 @@ class _ServerRouteState extends State<ServerRoute> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(16.0),
-                                    child: Text("Tags", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
+                                      child: TextStyles.Header.text("Tags")
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(16.0),
@@ -315,7 +317,7 @@ class _ServerRouteState extends State<ServerRoute> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(16.0),
-                                    child: Text("Contact", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: Colors.white70),),
+                                      child: TextStyles.Header.text("Social")
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(16.0),
@@ -366,10 +368,10 @@ class _ServerRouteState extends State<ServerRoute> {
           message: server.discord??"",
           child: Href(
             href: server.discord??"",
-            child: ShieldButton(color: Color(0xFF7289DA), icon: Padding(
+            child: ShieldButton(color: Hues.Blue.hard, icon: Padding(
               padding: const EdgeInsets.only(left:6, top: 6),
               child: Image.network("https://discord.com/assets/28174a34e77bb5e5310ced9f95cb480b.png"),
-            ), text: Text("Discord", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 20),), width: 250, height: 40,),
+            ), text: TextStyles.Title3.text("Discord"), width: 250, height: 40,),
           ),
         ),
       ),
@@ -390,7 +392,7 @@ class _ServerRouteState extends State<ServerRoute> {
           child: MouseRegion(
             cursor: SystemMouseCursors.click,
             child: Tooltip(message: server.mail,
-                child: ShieldButton(color: Color(0xFFD83B3B), icon: Icon(Icons.email, size: 30,), text: Text("E-Mail", style: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 20),), width: 250, height: 40,)
+                child: ShieldButton(color: Hues.Red.hard, icon: Icon(Icons.email, size: 30,), text: TextStyles.Title3.text("E-Mail"), width: 250, height: 40,)
             ),
           )
       ),
@@ -415,8 +417,7 @@ class _ServerRouteState extends State<ServerRoute> {
           message: server.website,
           child: Href(
             href: server.website,
-              child: ShieldButton(color: Colors.orange, icon: Icon(Icons.language, size: 30,), text: Text(spliced[0],
-                style: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 15),), width: 250, height: 40,)
+              child: ShieldButton(color: Hues.Yellow.hard, icon: Icon(Icons.language, size: 30,), text: TextStyles.Body.text((spliced[0]), color: textColor1), width: 250, height: 40,)
           ),
         ),
       ),
